@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1C51F918-E32B-4E41-BA73-BE93FDB5C211}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ultrasonic.DownloadManager.Core</RootNamespace>
+    <AssemblyName>Ultrasonic.DownloadManager.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Practices.Prism, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Assemblies\Microsoft.Practices.Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Assemblies\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Themes\ComboView.generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\ExtendedTreeView.generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\FeedbackView.generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Indicators.generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Resizer.generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\AutoGrid.cs" />
+    <Compile Include="Controls\FeedbackView.cs" />
+    <Compile Include="Controls\ImageStrip.cs" />
+    <Compile Include="Controls\NineGridBorder.cs" />
+    <Compile Include="Controls\Resizer.cs" />
+    <Compile Include="Controls\Reveal.cs" />
+    <Compile Include="Controls\RichToolTip.cs" />
+    <Compile Include="Controls\StatusIndicator.cs" />
+    <Compile Include="Controls\TemplateLazyLoad.cs" />
+    <Compile Include="Controls\[ComboView]\BaseComboItemsViewHandler.cs" />
+    <Compile Include="Controls\[ComboView]\ComboExtendedTreeViewHandler.cs" />
+    <Compile Include="Controls\[ComboView]\ComboItemsViewHandlersFactory.cs" />
+    <Compile Include="Controls\[ComboView]\ComboSelectorViewHandler.cs" />
+    <Compile Include="Controls\[ComboView]\ComboTreeViewHandler.cs" />
+    <Compile Include="Controls\[ComboView]\ComboView.cs" />
+    <Compile Include="Controls\[ComboView]\ComboViewItem.cs" />
+    <Compile Include="Controls\[ComboView]\ComboViewSelectionMode.cs" />
+    <Compile Include="Controls\[ComboView]\IComboItemsViewHandler.cs" />
+    <Compile Include="Controls\[ComboView]\InitialSelectionMode.cs" />
+    <Compile Include="Controls\[EditableContentControl]\EditableComboContentControl.cs" />
+    <Compile Include="Controls\[EditableContentControl]\EditableContentControl.cs" />
+    <Compile Include="Controls\[EditableContentControl]\EditableTextContentControl.cs" />
+    <Compile Include="Controls\[ExtendedTreeView]\ExtendedTreeView.cs" />
+    <Compile Include="Controls\[ExtendedTreeView]\ExtendedTreeViewHelper.cs" />
+    <Compile Include="Controls\[ExtendedTreeView]\ExtendedTreeViewItem.cs" />
+    <Compile Include="Controls\[ExtendedTreeView]\ItemCheckBehavior.cs" />
+    <Compile Include="Controls\[ExtendedTreeView]\ItemCheckChangedEventArgs.cs" />
+    <Compile Include="Controls\[ExtendedTreeView]\ItemSelectionInputSource.cs" />
+    <Compile Include="Controls\[ExtendedTreeView]\ItemTypeCheckRecordMode.cs" />
+    <Compile Include="Converters\AddDoubleConverter.cs" />
+    <Compile Include="Converters\BooleanConverter.cs" />
+    <Compile Include="Converters\BooleanVisibilityConverter.cs" />
+    <Compile Include="Converters\FormattedTextConverter.cs" />
+    <Compile Include="Converters\FormattedTextTypeConverter.cs" />
+    <Compile Include="Converters\LookBackConverter.cs" />
+    <Compile Include="Converters\ResizeGripConverters.cs" />
+    <Compile Include="Converters\ValueConverter.cs" />
+    <Compile Include="Commands\Commands.cs" />
+    <Compile Include="Commands\Notifiers.cs" />
+    <Compile Include="Internal\Point3DAnimationUsingPath.cs" />
+    <Compile Include="NotifyPropertyChangedBase.cs" />
+    <Compile Include="Themes\Resizer.generic.xaml.cs">
+      <DependentUpon>Resizer.generic.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\BindingHelper.cs" />
+    <Compile Include="Utils\DependencyHelper.cs" />
+    <Compile Include="Utils\ExpressionHelper.cs" />
+    <Compile Include="Utils\ObjectProducer.cs" />
+    <Compile Include="Utils\PropertyHandler.cs" />
+    <Compile Include="Utils\TreeViewHelper.cs" />
+    <Compile Include="Utils\UIHelper.cs" />
+    <Compile Include="Utils\WeakEventManagers.cs" />
+    <Compile Include="ViewModels\IRaiseNotifyPropertyChanged.cs" />
+    <Compile Include="ViewModels\IViewModelBase.cs" />
+    <Compile Include="ViewModels\PropertyDependencies.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="ViewModels\ViewModelProxy.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Themes\Images\darkaurora.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Images\cover.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Images\edge.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Images\feedback.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

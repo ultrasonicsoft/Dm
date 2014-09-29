@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<categories>
+  <types name="Movies">
+    <item checked="yes">Comedy</item>
+    <item>Thriller</item>
+    <item checked="yes">Drama</item>
+  </types>
+  <types name="Books">
+    <item>Children</item>
+    <item>Fiction</item>
+    <item>Picture</item>
+  </types>
+  <types name="Music">
+    <item checked="yes">Country</item>
+    <item checked="yes">Rock &amp; Roll</item>
+    <item checked="yes">Pop</item>
+  </types>
+</categories>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="3111d5fd-63d7-46ac-8d36-efbb5465e3c7" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://91.229.79.95/DownloadDataProviderService/DownloadDataProviderService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="DownloadDataProviderService.wsdl" MetadataType="Wsdl" ID="459b1727-261b-4758-afe4-4af16c87528c" SourceId="1" SourceUrl="http://91.229.79.95/DownloadDataProviderService/DownloadDataProviderService.svc?wsdl" />
+    <MetadataFile FileName="DownloadDataProviderService.xsd" MetadataType="Schema" ID="c6cea527-4b47-442f-a099-22fa72c388f3" SourceId="1" SourceUrl="http://91.229.79.95/DownloadDataProviderService/DownloadDataProviderService.svc?xsd=xsd0" />
+    <MetadataFile FileName="DownloadDataProviderService1.xsd" MetadataType="Schema" ID="5d17f8a9-3ec9-40ae-9553-cc8f7c2834b3" SourceId="1" SourceUrl="http://91.229.79.95/DownloadDataProviderService/DownloadDataProviderService.svc?xsd=xsd1" />
+    <MetadataFile FileName="DownloadDataProviderService.disco" MetadataType="Disco" ID="5d6a4220-442d-4ac8-ba82-3492c6b1d9b7" SourceId="1" SourceUrl="http://91.229.79.95/DownloadDataProviderService/DownloadDataProviderService.svc?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

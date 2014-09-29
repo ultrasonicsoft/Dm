@@ -1,0 +1,414 @@
+<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="clr-namespace:Ultrasonic.DownloadManager.Controls;assembly="
+    xmlns:conv="clr-namespace:Ultrasonic.DownloadManager.Core.Converters"
+    xmlns:mwt="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
+
+    <conv:AddDoubleConverter x:Key="AddDoubleConverter" />
+
+    <DataTemplate x:Key="{ComponentResourceKey local:ComboView, ComboViewSelectedItemTemplate}">
+        <TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" />
+    </DataTemplate>
+
+    <Style x:Key="{ComponentResourceKey local:ComboView, ComboViewSelectionContentStyle}"
+           TargetType="HeaderedContentControl">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="HeaderedContentControl">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <ContentPresenter
+                            Content="{TemplateBinding HeaderedContentControl.Header}"
+                            Margin="0,0,5,0"
+                            ContentTemplate="{TemplateBinding HeaderedContentControl.HeaderTemplate}"
+                            ContentStringFormat="{TemplateBinding HeaderedContentControl.HeaderStringFormat}"
+                            ContentSource="Header" />
+
+                        <ContentPresenter Grid.Column="1"
+                            Content="{TemplateBinding ContentControl.Content}"
+                            ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
+                            ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:ComboView}" BasedOn="{StaticResource {x:Type ComboBox}}">
+        <Setter Property="SelectionDisplayDelimiter" Value=", " />
+        <Setter Property="Padding" Value="5,3,5,3" />
+        <Setter Property="SelectedItemTemplate" Value="{StaticResource {ComponentResourceKey local:ComboView, ComboViewSelectedItemTemplate}}" />
+        <Setter Property="SelectionContentStyle" Value="{StaticResource {ComponentResourceKey local:ComboView, ComboViewSelectionContentStyle}}" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="local:ComboView.ItemsViewTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <local:ExtendedTreeView BorderThickness="0" />
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:ComboView}">
+                    <Grid Name="MainGrid" SnapsToDevicePixels="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="0" MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" />
+                        </Grid.ColumnDefinitions>
+
+                        <Popup IsOpen="{TemplateBinding IsDropDownOpen}"
+                               Style="{TemplateBinding PopupStyle}"
+                               Placement="Bottom" Focusable="False"
+                               AllowsTransparency="True"
+                               Name="PART_Popup"
+                               PopupAnimation="{TemplateBinding PopupAnimation}"
+                               Grid.ColumnSpan="2">
+                            <mwt:SystemDropShadowChrome Color="#00FFFFFF" Name="Shdw">
+                                <Border BorderThickness="1"
+                                        BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}"
+                                        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                        MinWidth="{TemplateBinding ActualWidth}">
+                                    <local:Resizer MinWidth="{TemplateBinding ActualWidth, Converter={StaticResource AddDoubleConverter}, ConverterParameter=-2}"
+                                                   MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                                   x:Name="PopupResizer">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition />
+                                                <RowDefinition x:Name="PopupBottomSpace" Height="Auto" />
+                                            </Grid.RowDefinitions>
+
+                                            <StackPanel x:Name="GlobalSelectionContainer"
+                                                        Visibility="Collapsed"
+                                                        Orientation="Horizontal"
+                                                        Margin="7,3,0,7" TextElement.FontSize="12px"
+                                                        HorizontalAlignment="Left">
+                                                <TextBlock><Hyperlink Command="{x:Static local:ComboView.GlobalSelectionCommand}" CommandParameter="True">All</Hyperlink></TextBlock>
+                                                <TextBlock Margin="10,0,0,0"><Hyperlink Command="{x:Static local:ComboView.GlobalSelectionCommand}" CommandParameter="False">None</Hyperlink></TextBlock>
+                                            </StackPanel>
+                                            
+                                            <Decorator x:Name="PART_ItemsViewPresenter" Grid.Row="1" />
+
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="2">
+                                                <Button x:Name="SaveElement" Content="Ok"
+                                                        Focusable="{TemplateBinding SelectionInvokersFocusable}"
+                                                    FontSize="10px" Width="100"
+                                                    Command="{x:Static local:ComboView.ApplySelectionCommand}"
+                                                    Margin="0,0,5,0" />
+                                                
+                                                <Button x:Name="CancelElement" Content="Cancel" 
+                                                        Focusable="{TemplateBinding SelectionInvokersFocusable}"
+                                                    FontSize="10px" Width="100" Margin="0,0,20,0"
+                                                    Command="{x:Static local:ComboView.CancelSelectionCommand}" />                                                
+                                            </StackPanel>
+                                        </Grid>
+                                    </local:Resizer>
+                                </Border>
+                            </mwt:SystemDropShadowChrome>
+                        </Popup>
+
+                        <ToggleButton IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
+                                      ToolTip="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ToolTip}"
+                                      BorderBrush="{TemplateBinding Border.BorderBrush}"
+                                      Background="{TemplateBinding Panel.Background}"
+                                      Grid.ColumnSpan="2">
+                            <ToggleButton.Style>
+                                <Style TargetType="{x:Type ToggleButton}">
+                                    <Style.Resources>
+                                        <ResourceDictionary />
+                                    </Style.Resources>
+                                    <Setter Property="FrameworkElement.OverridesDefaultStyle" Value="True" />
+                                    <Setter Property="KeyboardNavigation.IsTabStop" Value="False" />
+                                    <Setter Property="UIElement.Focusable" Value="False" />
+                                    <Setter Property="ButtonBase.ClickMode" Value="{Binding Source={x:Static ClickMode.Press}}" />
+                                    <Setter Property="Control.Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                                <mwt:ButtonChrome Background="{TemplateBinding Panel.Background}" BorderBrush="{TemplateBinding Border.BorderBrush}" RenderMouseOver="{TemplateBinding UIElement.IsMouseOver}" RenderPressed="{TemplateBinding ButtonBase.IsPressed}" Name="Chrome" SnapsToDevicePixels="True">
+                                                    <Grid Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" HorizontalAlignment="Right">
+                                                        <Path Data="M0,0L3.5,4 7,0z" Fill="#FF000000" Name="Arrow" Margin="3,1,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                    </Grid>
+                                                </mwt:ButtonChrome>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="ToggleButton.IsChecked" Value="True">
+                                                        <Setter Property="mwt:ButtonChrome.RenderPressed" TargetName="Chrome" Value="True" />
+                                                    </Trigger>
+                                                    <Trigger Property="UIElement.IsEnabled" Value="False">
+                                                        <Setter Property="Shape.Fill" TargetName="Arrow" Value="#FFAFAFAF" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ToggleButton.Style>
+                        </ToggleButton>
+
+                        <HeaderedContentControl
+                            Content="{TemplateBinding SelectionDisplay}"
+                            ContentTemplate="{TemplateBinding SelectedItemTemplate}"
+                            ContentStringFormat="{TemplateBinding ComboBox.SelectionBoxItemStringFormat}"
+                            Header="{TemplateBinding SelectionHeader}"
+                            Style="{TemplateBinding SelectionContentStyle}"
+                            Margin="{TemplateBinding Control.Padding}"
+                            HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+                            SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}"
+                            IsHitTestVisible="False" />
+
+                        <Decorator x:Name="PART_ItemsViewPlaceholder" Height="0" Width="0" />
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ShowGlobalSelection" Value="True">
+                            <Setter Property="Visibility" TargetName="GlobalSelectionContainer" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="Popup.HasDropShadow" SourceName="PART_Popup" Value="True">
+                            <Setter Property="FrameworkElement.Margin" TargetName="Shdw" Value="0,0,5,5" />
+                            <Setter Property="mwt:SystemDropShadowChrome.Color" TargetName="Shdw" Value="#71000000" />
+                        </Trigger>
+                        <Trigger Property="IsPopupResizeEnabled" Value="False">
+                            <Setter TargetName="PopupResizer" Property="IsGripVisible" Value="False" />
+                            <Setter TargetName="CancelElement" Property="Margin" Value="0,0,3,0" />
+                        </Trigger>
+                        <Trigger Property="SelectionMode" Value="Normal">
+                            <Setter TargetName="CancelElement" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="SaveElement" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsPopupResizeEnabled" Value="True" />
+                                <Condition Property="SelectionMode" Value="Normal" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PopupBottomSpace" Property="Height" Value="17" />
+                        </MultiTrigger>
+                        <Trigger Property="ItemsControl.HasItems" Value="False">
+                            <Setter Property="FrameworkElement.Height" TargetName="PopupResizer" Value="95" />
+                        </Trigger>
+                        <Trigger Property="UIElement.IsEnabled" Value="False">
+                            <Setter Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            <Setter Property="Panel.Background" Value="#FFF4F4F4" />
+                        </Trigger>
+                        <Trigger Property="ItemsControl.IsGrouping" Value="True">
+                            <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--## Ribbon Style (Blue) ##-->
+
+    <SolidColorBrush x:Key="RibbonTextBoxBackgroundBrush" Color="#EAF2FB" />
+    <SolidColorBrush x:Key="RibbonTextBoxBorderBrush" Color="#ABC1DE" />
+
+    <LinearGradientBrush x:Key="RibbonButtonIsMouseOverBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Offset="0" Color="#FFFCDA" />
+        <GradientStop Offset="0.36" Color="#FFE793" />
+        <GradientStop Offset="0.36" Color="#FFD750" />
+        <GradientStop Offset="1" Color="#FFE793" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="RibbonButtonIsMouseOverBorderBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Offset="0" Color="#DDCF9B" />
+        <GradientStop Offset="0.5" Color="#C0A776" />
+        <GradientStop Offset="1.0" Color="#D3CFBC" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="RibbonButtonIsPressedBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Offset="0" Color="#C79A61" />
+        <GradientStop Offset="0.06" Color="#F8BA6B" />
+        <GradientStop Offset="0.36" Color="#FDA661" />
+        <GradientStop Offset="0.36" Color="#FC923D" />
+        <GradientStop Offset="1" Color="#FEC36C" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="RibbonButtonIsPressedBorderBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Offset="0" Color="#8E8165" />
+        <GradientStop Offset="1" Color="#C6C0B2" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="RibbonButtonIsPressedInnerBorderBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Offset="0" Color="#C79A61" />
+        <GradientStop Offset="0.06" Color="#F8BA6B" />
+        <GradientStop Offset="0.36" Color="#F7A427" />
+        <GradientStop Offset="0.36" Color="#F69C18" />
+        <GradientStop Offset="1" Color="#FDAD11" />
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="RibbonDownArrowBrush" Color="#567DB1" />
+
+    <Style x:Key="RibbonComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="IsTabStop" Value="false" />
+        <Setter Property="Focusable" Value="false" />
+        <Setter Property="ClickMode" Value="Press" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                        <Border HorizontalAlignment="Right" Name="Chrome" Width="14" Background="{StaticResource RibbonTextBoxBackgroundBrush}" BorderBrush="Transparent" BorderThickness="0,1,1,1" SnapsToDevicePixels="true">
+                            <Border Name="InnerChrome" BorderBrush="Transparent" BorderThickness="2,0,1,0" SnapsToDevicePixels="true">
+                                <Path Name="Arrow" Fill="{StaticResource RibbonDownArrowBrush}" Margin="0,0,3,0" Data="M0,0L2.5,3 5,0z" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                            </Border>
+                        </Border>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Chrome" Property="Background" Value="{StaticResource RibbonButtonIsMouseOverBackgroundBrush}" />
+                            <Setter TargetName="Chrome" Property="BorderBrush" Value="{StaticResource RibbonButtonIsMouseOverBorderBrush}" />
+                            <Setter TargetName="Chrome" Property="BorderThickness" Value="1" />
+                            <Setter TargetName="InnerChrome" Property="BorderBrush" Value="White" />
+                            <Setter TargetName="InnerChrome" Property="BorderThickness" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="true">
+                            <Setter TargetName="Chrome" Property="Background" Value="{StaticResource RibbonButtonIsPressedBackgroundBrush}" />
+                            <Setter TargetName="Chrome" Property="BorderBrush" Value="{StaticResource RibbonButtonIsPressedBorderBrush}" />
+                            <Setter TargetName="Chrome" Property="BorderThickness" Value="1" />
+                            <Setter TargetName="InnerChrome" Property="BorderBrush" Value="{StaticResource RibbonButtonIsPressedInnerBorderBrush}" />
+                            <Setter TargetName="InnerChrome" Property="BorderThickness" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" Value="#EFEFEF" />
+                            <Setter Property="BorderBrush" Value="#B1BBC6" />
+                            <Setter TargetName="Arrow" Property="Fill" Value="#B7B7B7" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="{ComponentResourceKey local:ComboView, ComboViewOfficeBlue}" TargetType="local:ComboView">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
+        <Setter Property="Background" Value="{StaticResource RibbonTextBoxBackgroundBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource RibbonTextBoxBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="4,3" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:ComboView">
+                    <Grid Name="MainGrid" SnapsToDevicePixels="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="0" MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" />
+                        </Grid.ColumnDefinitions>
+
+                        <Popup IsOpen="{TemplateBinding IsDropDownOpen}"
+                               Style="{TemplateBinding PopupStyle}"
+                               Placement="Bottom" Focusable="False"
+                               AllowsTransparency="True"
+                               Name="PART_Popup"
+                               PopupAnimation="{TemplateBinding PopupAnimation}"
+                               Grid.ColumnSpan="2">
+                            <mwt:SystemDropShadowChrome Color="#00FFFFFF" Name="Shdw">
+                                <Border BorderThickness="1" CornerRadius="2" BorderBrush="#868686" Background="#FAFAFA"
+                                        MinWidth="{TemplateBinding ActualWidth}">
+                                    <local:Resizer MinWidth="{TemplateBinding ActualWidth, Converter={StaticResource AddDoubleConverter}, ConverterParameter=-2}"
+                                                   MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                                   x:Name="PopupResizer">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition />
+                                                <RowDefinition x:Name="PopupBottomSpace" Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            
+                                            <StackPanel x:Name="GlobalSelectionContainer"
+                                                        Visibility="Collapsed"
+                                                        Orientation="Horizontal"
+                                                        Margin="7,3,0,7" TextElement.FontSize="12px"
+                                                        HorizontalAlignment="Left">
+                                                <TextBlock><Hyperlink Command="{x:Static local:ComboView.GlobalSelectionCommand}" CommandParameter="True">All</Hyperlink></TextBlock>
+                                                <TextBlock Margin="10,0,0,0"><Hyperlink Command="{x:Static local:ComboView.GlobalSelectionCommand}" CommandParameter="False">None</Hyperlink></TextBlock>
+                                            </StackPanel>
+
+                                            <Decorator x:Name="PART_ItemsViewPresenter" Grid.Row="1" />
+
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="2">
+                                                <Button x:Name="SaveElement" Content="Ok"
+                                                        Focusable="{TemplateBinding SelectionInvokersFocusable}"
+                                                    FontSize="10px" Width="100"
+                                                    Command="{x:Static local:ComboView.ApplySelectionCommand}"
+                                                    Margin="0,0,5,0" />
+                                                
+                                                <Button x:Name="CancelElement" Content="Cancel" 
+                                                        Focusable="{TemplateBinding SelectionInvokersFocusable}"
+                                                    FontSize="10px" Width="100" Margin="0,0,20,0"
+                                                    Command="{x:Static local:ComboView.CancelSelectionCommand}" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </local:Resizer>
+                                </Border>
+                            </mwt:SystemDropShadowChrome>
+                        </Popup>
+
+                        <ToggleButton IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
+                                      ToolTip="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ToolTip}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      Background="{TemplateBinding Background}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      Grid.ColumnSpan="2"
+                                      Style="{StaticResource RibbonComboBoxToggleButton}" />
+
+                        <HeaderedContentControl
+                            Content="{TemplateBinding SelectionDisplay}"
+                            ContentTemplate="{TemplateBinding SelectedItemTemplate}"
+                            ContentStringFormat="{TemplateBinding ComboBox.SelectionBoxItemStringFormat}"
+                            Header="{TemplateBinding SelectionHeader}"
+                            Style="{TemplateBinding SelectionContentStyle}"
+                            Margin="{TemplateBinding Control.Padding}"
+                            HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+                            SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}"
+                            IsHitTestVisible="False" />
+
+                        <Decorator x:Name="PART_ItemsViewPlaceholder" Height="0" Width="0" />
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ShowGlobalSelection" Value="True">
+                            <Setter Property="Visibility" TargetName="GlobalSelectionContainer" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="Popup.HasDropShadow" SourceName="PART_Popup" Value="True">
+                            <Setter Property="FrameworkElement.Margin" TargetName="Shdw" Value="0,0,5,5" />
+                            <Setter Property="mwt:SystemDropShadowChrome.Color" TargetName="Shdw" Value="#71000000" />
+                        </Trigger>
+                        <Trigger Property="IsPopupResizeEnabled" Value="False">
+                            <Setter TargetName="PopupResizer" Property="IsGripVisible" Value="False" />
+                            <Setter TargetName="CancelElement" Property="Margin" Value="0,0,3,0" />
+                        </Trigger>
+                        <Trigger Property="SelectionMode" Value="Normal">
+                            <Setter TargetName="CancelElement" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="SaveElement" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsPopupResizeEnabled" Value="True" />
+                                <Condition Property="SelectionMode" Value="Normal" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PopupBottomSpace" Property="Height" Value="17" />
+                        </MultiTrigger>
+                        <Trigger Property="ItemsControl.HasItems" Value="False">
+                            <Setter Property="FrameworkElement.Height" TargetName="PopupResizer" Value="95" />
+                        </Trigger>
+                        <Trigger Property="UIElement.IsEnabled" Value="False">
+                            <Setter Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            <Setter Property="Panel.Background" Value="#FFF4F4F4" />
+                        </Trigger>
+                        <Trigger Property="ItemsControl.IsGrouping" Value="True">
+                            <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

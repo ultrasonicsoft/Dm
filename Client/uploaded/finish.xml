@@ -1,0 +1,50 @@
+<filelist>
+ <file filename="test1" id="e1ec0644b7602da11c1a40a84ae3941d" uploaded="yes">
+    <location>/var/www/uploaded/files/movies/</location>
+    <password>uploaded.net</password>
+    <upload number="1">
+      <part partname="0450cdcc28">
+        <link>http://ul.to/b97xpgwd</link>
+      </part>
+    </upload>
+    <list>
+      <item name="3.txt">
+        <path>/var/www/uploaded/files/movies/TestData/3.txt</path>
+      </item>
+      <item name="work plan.xlsx">
+        <path>
+          /var/www/uploaded/files/movies/TestData/work plan.xlsx
+        </path>
+      </item>
+      <item name="1.txt">
+        <path>/var/www/uploaded/files/movies/TestData/1.txt</path>
+      </item>
+    </list>
+    <categories/>
+    <informations/>
+  </file>
+  <file filename="test2" id="e1ec0644b7602da11c1a40a84ae3941d" uploaded="yes">
+    <location>/var/www/uploaded/files/movies/</location>
+    <password>uploaded.net</password>
+    <upload number="1">
+      <part partname="0450cdcc28">
+        <link>http://ul.to/9tam5tyc</link>
+      </part>
+    </upload>
+    <list>
+      <item name="3.txt">
+        <path>/var/www/uploaded/files/movies/TestData/3.txt</path>
+      </item>
+      <item name="work plan.xlsx">
+        <path>
+          /var/www/uploaded/files/movies/TestData/work plan.xlsx
+        </path>
+      </item>
+      <item name="1.txt">
+        <path>/var/www/uploaded/files/movies/TestData/1.txt</path>
+      </item>
+    </list>
+    <categories/>
+    <informations/>
+  </file>
+</filelist>

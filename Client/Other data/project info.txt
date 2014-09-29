@@ -1,0 +1,33 @@
+Ohad Asor <ohadasor@netvision.net.il>
+10:56 AM (11 hours ago)
+
+to me 
+hi,
+this is in addition to what mentioned in the project description.
+
+the server is uploaded.net try to register there, you just type email address below, and you get an email with a link, and once you click the link - you're logged in and you can take the cookie (and edit it when needed). it should do it automatically, except for email stuff -- assume that we have a software that generated email address and able to fetch received emails?
+it should support download multiple files, and display a some fancy progress.
+
+we will need auto registration on uploaded.net automaticly using http://10minutemail.com/10MinuteMail/index.html
+then get the confirmation email to confirm the registration.
+
+
+
+On the left side there is the navigation with the buttons
+ 
+On top there are the filters. On top on the right side is the search field.
+ 
+On the right side, there is the window which changes if you click on the buttons of the navigation.
+ 
+Home Button:                  Will show in the window on the right side, information and news like the stuff which I post on the Website (Maybe it is possible to show up a single  website like http://www.cyber-share.net/status.php without buttons or anything. Just a simple website with information on it)
+Accountinformation:     Will show in the window on the right side, the information about the Uploaded Account. For Example how long till the Account expire, creation date, how much the client downloaded and how much download traffic left. Uploaded limited the downloadtraffic. 50GB per Day but you can save up to 300GB. So the Client software needs to count the downloadtraffic and if it reached the traffic, it should block to download stuff until the next day. The Client gets every 24H 50GB traffic.
+Subscribe:                          Will show in the window on the right side, the Subscribe proceed.
+Download:                         Will change the buttons on the navigation to the buttons of categories. On the right side, it will show up the last few Movies which added to the xml file. If the user clicks on a categorie button, on the window on the right side will show up the movies under this categorie. And a Back Button on the bottom of the navigation window to get back one level up or back to the navigation window.
+Downoad Status:            Will show in the window on the right side, Information about the Downloads, for Example. Traffic Left, Downloadspeed, Download volume, current downloading movie and the queue list if the User clicks more than one movie to download, Time till done for the current downloading movie and time till done for the whole queue list.
+FAQ:                                     Will show in the window on the right side, like the home button, a single website for example http://www.cyber-share.net/faq.php
+ 
+On the startup of the client software, will create an email address and register a Uploaded Account. Then read out the Hardwareid and safe the uploaded account information, HardwareID and email address in a crypted file (user.config) in the Clientsoftware folder. These information should send to an Server database also. If there is  a user.config in the clientfolder, so the client software do not need to create another uploaded account or email address. If the user copy that user.config to another machine, it will check the HardwareId and close the software with an information that the user.config do not match with that PC and the user need to contact me.  On the first startup, the User has to create an account to use the client software. Just 4 fields. Like username, password, password again to verify and emailadress. These information needs to save in the user.config too and send to the server database . The information needs to send encrypted.
+ 
+On every startup, it will get the information about the movies, save to a file on the PC and just download the information which are new.
+ 
+Please start with the download modul and the subscribe modul, so I can start to upload.

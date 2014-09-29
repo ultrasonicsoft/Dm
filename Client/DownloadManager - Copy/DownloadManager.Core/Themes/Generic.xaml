@@ -1,0 +1,14 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Ultrasonic.DownloadManager.Core">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Ultrasonic.DownloadManager.Core;component/Themes/Indicators.generic.xaml"/>
+        <ResourceDictionary Source="/Ultrasonic.DownloadManager.Core;component/Themes/Resizer.generic.xaml"/>
+        <ResourceDictionary Source="/Ultrasonic.DownloadManager.Core;component/Themes/ComboView.generic.xaml"/>
+        <ResourceDictionary Source="/Ultrasonic.DownloadManager.Core;component/Themes/ExtendedTreeView.generic.xaml"/>
+        <ResourceDictionary Source="/Ultrasonic.DownloadManager.Core;component/Themes/FeedbackView.generic.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

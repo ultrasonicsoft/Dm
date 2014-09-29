@@ -1,0 +1,147 @@
+<filelist>
+  <file filename="Test" id="f145f6e9eee1f6a4508fe3401921785d" uploaded="yes">
+    <location>/var/www/uploaded/files/movies/</location>
+    <password>uploaded.net</password>
+    <upload number="1">
+      <part partname="450b240041">
+        <link>http://ul.to/b4b5540m</link>
+      </part>
+    </upload>
+    <list>
+      <item name="7z.log">
+        <path>/var/www/uploaded/files/movies/Test/7z.log</path>
+      </item>
+    </list>
+    <categories/>
+    <informations/>
+    <description>test</description>
+    <reflink/>
+  </file>
+  <file filename="pop" id="2a2922eb769437ada7190b5ab4387ce5" uploaded="yes">
+    <location>/var/www/uploaded/files/music/</location>
+    <password>uploaded.net</password>
+    <upload number="3">
+      <part partname="150b240226">
+        <link>http://ul.to/4fw9erv0</link>
+      </part>
+      <part partname="1350b24195">
+        <link>http://ul.to/459yotd7</link>
+      </part>
+      <part partname="0b24205333">
+        <link>http://ul.to/x1r279js</link>
+      </part>
+    </upload>
+    <list>
+      <item name="Bong hong cai ao - bang kieu.MP3">
+        <path>
+          /var/www/uploaded/files/music/pop/Bong hong cai ao - bang kieu.MP3
+        </path>
+      </item>
+      <item name="Trai tim ben le.mp3">
+        <path>
+          /var/www/uploaded/files/music/pop/bangkieu/Trai tim ben le.mp3
+        </path>
+      </item>
+    </list>
+    <categories/>
+    <informations/>
+  </file>
+  <file filename="movie1" id="8375ffd2ef47078d1033588ee18349a4" uploaded="yes">
+    <location>/var/www/uploaded/files/movies/</location>
+    <password>uploaded.net</password>
+    <upload number="1">
+      <part partname="650cb51378">
+        <link>http://ul.to/g63ll9wu</link>
+      </part>
+    </upload>
+    <list>
+      <item name="a.mpg">
+        <path>/var/www/uploaded/files/movies/movie1/a.mpg</path>
+      </item>
+    </list>
+    <categories>
+      <type title="movies_comedy"/>
+    </categories>
+    <informations>
+      <item title="720 hd"/>
+    </informations>
+  </file>
+  <file filename="movie2" id="0c049a030bd4a65592793350d5d93862" uploaded="yes">
+    <location>/var/www/uploaded/files/movies/</location>
+    <password>uploaded.net</password>
+    <upload number="13">
+      <part partname="9850cb6a41">
+        <link>http://ul.to/n24816ka</link>
+      </part>
+      <part partname="5150cb6b11">
+        <link>http://ul.to/h5i5zbhe</link>
+      </part>
+      <part partname="6850cb6b94">
+        <link>http://ul.to/3utexrt2</link>
+      </part>
+      <part partname="4250cb6c73">
+        <link>http://ul.to/f2upwj6u</link>
+      </part>
+      <part partname="9850cb6c77">
+        <link>http://ul.to/qf2pl0tk</link>
+      </part>
+      <part partname="150cb6d075">
+        <link>http://ul.to/jbq9ral6</link>
+      </part>
+      <part partname="4850cb6d31">
+        <link>http://ul.to/y06yhhm0</link>
+      </part>
+      <part partname="0850cb6d38">
+        <link>http://ul.to/boucz6oi</link>
+      </part>
+      <part partname="0650cb6e73">
+        <link>http://ul.to/y38s6k10</link>
+      </part>
+      <part partname="6550cb6e31">
+        <link>http://ul.to/5vo7zhzz</link>
+      </part>
+      <part partname="6550cb6f93">
+        <link>http://ul.to/ibyrr1lv</link>
+      </part>
+      <part partname="50cb6f9131">
+        <link>http://ul.to/8rzn8eh6</link>
+      </part>
+      <part partname="450cb6ff14">
+        <link>http://ul.to/71ru9e52</link>
+      </part>
+    </upload>
+    <list>
+      <item name="test_movie.mp4">
+        <path>
+          /var/www/uploaded/files/movies/movie2/test_movie.mp4
+        </path>
+      </item>
+    </list>
+    <categories/>
+    <informations/>
+  </file>
+  <file filename="TestData" id="e1ec0644b7602da11c1a40a84ae3941d" uploaded="yes">
+    <location>/var/www/uploaded/files/movies/</location>
+    <password>uploaded.net</password>
+    <upload number="1">
+      <part partname="0450cdcc28">
+        <link>http://ul.to/0eooiv5q</link>
+      </part>
+    </upload>
+    <list>
+      <item name="3.txt">
+        <path>/var/www/uploaded/files/movies/TestData/3.txt</path>
+      </item>
+      <item name="work plan.xlsx">
+        <path>
+          /var/www/uploaded/files/movies/TestData/work plan.xlsx
+        </path>
+      </item>
+      <item name="1.txt">
+        <path>/var/www/uploaded/files/movies/TestData/1.txt</path>
+      </item>
+    </list>
+    <categories/>
+    <informations/>
+  </file>
+</filelist>

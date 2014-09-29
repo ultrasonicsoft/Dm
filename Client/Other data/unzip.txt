@@ -1,0 +1,10 @@
+
+C:\Program Files\7-Zip>7z  x  "F:\Balram Data\Important\Project\Client in C#.NET
+ wpf\Supporting files\0450cdcc28" -puploaded.net -of:\zipOutput
+
+7z  x  "F:\Balram Data\Important\Project\Client in C#.NET wpf\Supporting files\ebook_CSharp_2008.7z.001" "F:\Balram Data\Important\Project\Client in C#.NET wpf\Supporting files\ebook_CSharp_2008.7z.002" -of:\zipOutput
+
+
+
+C:\Program Files\7-Zip>7z  x  "F:\Balram Data\Important\Project\Client in C#.NET
+ wpf\Supporting files\ebook_CSharp_2008_1.7z.001" -pabcd -of:\zipOutput

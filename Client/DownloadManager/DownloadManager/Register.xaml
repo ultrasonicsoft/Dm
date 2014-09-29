@@ -1,0 +1,26 @@
+﻿<Window x:Class="Ultrasonic.DownloadManager.Register"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Register" Height="273" Width="600" WindowStartupLocation="CenterScreen" WindowStyle="ThreeDBorderWindow">
+    <Grid>
+        <Canvas Height="222" HorizontalAlignment="Left" Name="canvas2" VerticalAlignment="Top" Width="578" Background="GhostWhite">
+            <Label Canvas.Left="10" Canvas.Top="10" Content="Pay with Paysafe Card" Height="28" Name="label3" />
+            <Label Canvas.Left="10" Canvas.Top="43" Content="PIN:" Height="28" Name="label4" />
+            <TextBox Canvas.Left="47" Canvas.Top="46" Height="23" Name="txtpaysafe_pin1" Width="48" />
+            <TextBox Canvas.Left="101" Canvas.Top="46" Height="23" Name="txtpaysafe_pin2" Width="48" />
+            <TextBox Canvas.Left="155" Canvas.Top="46" Height="23" Name="txtpaysafe_pin3" Width="48" />
+            <TextBox Canvas.Left="209" Canvas.Top="46" Height="23" Name="txtpaysafe_pin4" Width="48" />
+            <RadioButton Canvas.Left="328" Canvas.Top="15" Content="48 Hours     4.99 Euro (6.99 USD)" Name="rbtn48Hours" IsChecked="True" GroupName="PremiumPeriod" />
+            <RadioButton Canvas.Left="328" Canvas.Top="43" Content="1 Month     9.99 Euro (13.99 USD)" Name="rbtn1Month" GroupName="PremiumPeriod" />
+            <RadioButton Canvas.Left="328" Canvas.Top="73" Content="3 Months     24.99 Euro (33.99 USD)" Name="rbtn3Months" GroupName="PremiumPeriod" />
+            <RadioButton Content="6 Months     39.99 Euro (52.99 USD)" Name="rbtn6Months" Canvas.Left="328" Canvas.Top="104" GroupName="PremiumPeriod" />
+            <RadioButton Content="1 Year     69.99 Euro (92.99 USD)" Name="rbtn1Year" Canvas.Left="328" Canvas.Top="133" GroupName="PremiumPeriod" />
+            <Button Canvas.Left="87" Canvas.Top="129" Content="Register" Height="23" Name="btnRegister" Width="75" Background="BurlyWood" Click="btnRegister_Click" />
+            <CheckBox Canvas.Left="10" Canvas.Top="77" Content="Yes, I agree to terms of paysafecard." Height="16" Name="chbAgreeToTerms" />
+            <TextBlock Canvas.Left="27" Canvas.Top="96">
+                <Hyperlink Name="TermsOfPaysafecard" NavigateUri="http://www.paysafecard.com/index.php" RequestNavigate="TermsOfPaysafecard_RequestNavigate">Terms of Paysafecard</Hyperlink>
+            </TextBlock>
+            <ProgressBar Height="21" Name="progressBar1" Width="531" Canvas.Left="27" Canvas.Top="185" IsIndeterminate="True" Visibility="Hidden" />
+        </Canvas>
+    </Grid>
+</Window>
