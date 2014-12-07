@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Input;
 using Microsoft.Practices.Prism.Commands;
 using ReactiveUI;
 using Ultrasonic.DownloadManager.Model;
@@ -39,12 +40,14 @@ namespace Ultrasonic.DownloadManager.ViewModel
         }
         private void ExecuteRegisterCommand()
         {
+            Mouse.OverrideCursor = Cursors.Wait;
             if (_serviceRepository.RegisterNewUser(NewUser.UserName, NewUser.Password, NewUser.Email))
             {
                 MainWindow mainWindow = new MainWindow() {LoggedInUser = NewUser};
                 mainWindow.Show();
                 NewUserView.Close();
             }
+            Mouse.OverrideCursor = null;
         }
         
     }
