@@ -44,11 +44,11 @@ namespace Ultrasonic.DownloadManager
         internal const string OUTPUT_ZIP_FOLDER = @"f:\zipOutput";
         
         // logging path
-        internal const string LOGGING_FILE_PATH = @"C:\Users\BChavan\Desktop\cdm.log";
+        //internal const string LOGGING_FILE_PATH = @"C:\Users\BChavan\Desktop\cdm.log";
 
         //logging messages
         internal const string PLEASE_WAIT_LOG = "Please wait... This will take few minutes...";
-        internal const string CREATING_10MINUTE_ID_LOG = "Creating  10minutemail new email id";
+        internal const string CREATING_10MINUTE_ID_LOG = "Creating 10minutemail new email id";
         internal const string EMAIL_ID_IS_LOG = "emailID is : ";
         internal const string CREATING_UPLOADED_ACCOUNT_LOG = "Creating Uploaded.net new account with 10minute email id";
         internal const string ACCOUNT_CREATED_LOG = "Account created";

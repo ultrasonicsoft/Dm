@@ -24,7 +24,7 @@ namespace Ultrasonic.DownloadManager
         protected override void OnStartup(StartupEventArgs e)
         {
             //new ObjectProducerTest().Test();
-
+            
             base.OnStartup(e);
 
             //quick simple bootstrap

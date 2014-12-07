@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<filelist>
+  <ftpuser>7160709</ftpuser>
+  <ftppass>cpyzzbwy</ftppass>
+  <location>/var/www/uploaded/files/movies</location>
+  <location name="Music">/var/www/uploaded/files/music</location>
+  <volume>10000000</volume>
+  <file filename="rock" id="f6f8186daabe6c58995d9c9246e09e8c">
+    <location>/var/www/uploaded/files/music/</location>
+    <list>
+      <item name="Bong hong cai ao - bang kieu.MP3">
+        <path>/var/www/uploaded/files/music/rock/Bong hong cai ao - bang kieu.MP3</path>
+      </item>
+      <item name="Trai tim ben le.mp3">
+        <path>/var/www/uploaded/files/music/rock/bangkieu/Trai tim ben le.mp3</path>
+      </item>
+    </list>
+  </file>
+  <file filename="myfile" id="f6f8186daabe6c58995d9c9246e09e8c">
+    <location>/var/www/uploaded/files/music/</location>
+    <list>
+      <item name="Bong hong cai ao - bang kieu.MP3">
+        <path>/var/www/uploaded/files/music/rock/Bong hong cai ao - bang kieu.MP3</path>
+      </item>
+      <item name="Trai tim ben le.mp3">
+        <path>/var/www/uploaded/files/music/rock/bangkieu/Trai tim ben le.mp3</path>
+      </item>
+    </list>
+  </file>
+  <file filename="old" id="f6f8186daabe6c58995d9c9246e09e8c">
+    <location>/var/www/uploaded/files/music/</location>
+    <list>
+      <item name="Bong hong cai ao - bang kieu.MP3">
+        <path>/var/www/uploaded/files/music/rock/Bong hong cai ao - bang kieu.MP3</path>
+      </item>
+      <item name="Trai tim ben le.mp3">
+        <path>/var/www/uploaded/files/music/rock/bangkieu/Trai tim ben le.mp3</path>
+      </item>
+    </list>
+  </file>
+  <file filename="news" id="f6f8186daabe6c58995d9c9246e09e8c">
+    <location>/var/www/uploaded/files/music/</location>
+    <list>
+      <item name="Bong hong cai ao - bang kieu.MP3">
+        <path>/var/www/uploaded/files/music/rock/Bong hong cai ao - bang kieu.MP3</path>
+      </item>
+      <item name="Trai tim ben le.mp3">
+        <path>/var/www/uploaded/files/music/rock/bangkieu/Trai tim ben le.mp3</path>
+      </item>
+    </list>
+  </file>
+</filelist>

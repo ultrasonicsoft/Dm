@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -8,6 +9,8 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using WatiN.Core;
+using WatiN.Core.Native.Windows;
+using Window = System.Windows.Window;
 
 namespace Ultrasonic.DownloadManager
 {
@@ -16,7 +19,7 @@ namespace Ultrasonic.DownloadManager
     /// </summary>
     public partial class Register : Window
     {
-        private StringBuilder loggingInformation = new StringBuilder();
+        //private StringBuilder loggingInformation = new StringBuilder();
         internal bool RegistrationSuccessful { get; set; }
         internal string AccountId { get; set; }
         internal string Password { get; set; }
@@ -46,6 +49,12 @@ namespace Ultrasonic.DownloadManager
         /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
+            //RegisterOldWay();
+            RegiterNewWay();
+        }
+
+        private void RegiterNewWay()
+        {
             Wait frmWait = new Wait();
             try
             {
@@ -53,68 +62,20 @@ namespace Ultrasonic.DownloadManager
                 Mouse.OverrideCursor = Cursors.Wait;
 
                 //Settings.Instance.MakeNewIeInstanceVisible = false;
-                
-                loggingInformation.Append(DateTime.Now.ToShortTimeString() + Environment.NewLine);
+
                 IE explore = new IE();
                 explore.ClearCache();
                 explore.ClearCookies();
                 explore.WaitForComplete();
+                explore.ShowWindow(NativeMethods.WindowShowStyle.Maximize);
 
-                loggingInformation.Append(Helper.CREATING_10MINUTE_ID_LOG + Environment.NewLine);
-                explore.GoTo(Helper._10_MINUTE_MAIL_URL);
-                explore.WaitForComplete();
-                string emailID = explore.TextField(Find.ById(Helper._10_MINUTE_EMAIL_TEXTBOX_ID)).Value;
 
-                loggingInformation.Append(Helper.EMAIL_ID_IS_LOG + emailID + Environment.NewLine);
+                LogHelper.logger.Info("Redirect to Register page ");
 
-                loggingInformation.Append(Helper.CREATING_UPLOADED_ACCOUNT_LOG + Environment.NewLine);
-
-                CreateUploadLogin(emailID);
-
-                loggingInformation.Append(Helper.ACCOUNT_CREATED_LOG + Environment.NewLine);
-
-                loggingInformation.Append(Helper.READING_WELCOME_MAIL_LOG + Environment.NewLine);
-
-                bool isConfirmationMailArrived = false;
-
-                string confirmationUrl = string.Empty;
-
-                while (!isConfirmationMailArrived)
-                {
-                    Thread.Sleep(20000);
-                    explore.GoTo(Helper.CONFIRMATION_EMAIL_URL);
-                    explore.WaitForComplete();
-
-                    loggingInformation.Append(Helper.EXTRACTING_CONFIRMATION_URL_LOG + Environment.NewLine);
-
-                     confirmationUrl = GetConfirmationMailId(explore.Html);
-                    if (!string.IsNullOrEmpty(confirmationUrl))
-                    {
-                        isConfirmationMailArrived = true;
-                    }
-                }
-                loggingInformation.Append(Helper.CONFIRMATION_URL_LOG + Environment.NewLine);
-
-                loggingInformation.Append(Helper.HITTING_CONFIRMATION_URL_LOG + Environment.NewLine);
-
-                IE uploadedExplorer = new IE(confirmationUrl);
-
-                loggingInformation.Append(Helper.READING_USERNAME_PASSWORD_LOG + Environment.NewLine);
-
-                Thread.Sleep(20000);
-                explore.GoTo(Helper.PASSWORD_EMAIL_URL);
+                explore.GoTo("http://Ul.to/ref/6335349");
                 explore.WaitForComplete();
 
-                string newAccountId;
-                string newPassword;
-
-                loggingInformation.Append(Helper.EXTRACTING_USERNAME_PASSWORD_LOG + Environment.NewLine);
-
-                GetAccountIdAndPassword(explore, out newAccountId, out newPassword);
-
-                loggingInformation.Append(Helper.USERNAME_LOG + newAccountId + Environment.NewLine + Helper.PASSWORD_LOG + newPassword + Environment.NewLine);
-
-                PremiumPeriod period = PremiumPeriod._48Hours;
+                var period = PremiumPeriod._48Hours;
                 if (rbtn48Hours.IsChecked == true)
                 {
                     period = PremiumPeriod._48Hours;
@@ -136,15 +97,245 @@ namespace Ultrasonic.DownloadManager
                     period = PremiumPeriod._1Year;
                 }
 
-                string paysafe_pin1 = txtpaysafe_pin1.Text;
-                string paysafe_pin2 = txtpaysafe_pin2.Text;
-                string paysafe_pin3 = txtpaysafe_pin3.Text;
-                string paysafe_pin4 = txtpaysafe_pin4.Text;
+                bool isValidPeriod = false;
+                switch (period)
+                {
+                    case PremiumPeriod._48Hours:
+                        LogHelper.logger.Info("Selecting premium registration duration 2 days ");
+                        explore.GoTo(Helper._2_DAYS_PREMIUM_DURATION_URL);
+                        isValidPeriod = true;
+                        break;
+                    case PremiumPeriod._1Month:
+                        LogHelper.logger.Info("Selecting premium registration duration 1 month ");
+                        explore.GoTo(Helper._1_MONTH_PREMIUM_DURATION_URL);
+                        isValidPeriod = true;
+                        break;
+                    case PremiumPeriod._3Months:
+                        LogHelper.logger.Info("Selecting premium registration duration 3 month ");
+                        explore.GoTo(Helper._3_MONTHS_PREMIUM_DURATION_URL);
+                        isValidPeriod = true;
+                        break;
+                    case PremiumPeriod._6Months:
+                        LogHelper.logger.Info("Selecting premium registration duration 6 month ");
+                        explore.GoTo(Helper._6_MONTHS_PREMIUM_DURATION_URL);
+                        isValidPeriod = true;
+                        break;
+                    case PremiumPeriod._1Year:
+                        LogHelper.logger.Info("Selecting premium registration duration 1 year");
+                        explore.GoTo(Helper._1_YEAR_PREMIUM_DURATION_URL);
+                        isValidPeriod = true;
+                        break;
+                }
 
-                bool finalStautus = RegisterForPremiumAccountWithReference(uploadedExplorer, period, emailID, paysafe_pin1, paysafe_pin2, paysafe_pin3, paysafe_pin4);
+                string email = ConfigurationManager.AppSettings["email"];
+                explore.TextField(Find.ById("free-mail")).Value = email;
+                string firstName = ConfigurationManager.AppSettings["firstName"];
+                explore.TextField(Find.ById("free-firstname")).Value = email;
+                string lastName = ConfigurationManager.AppSettings["lastName"];
+                explore.TextField(Find.ById("free-lastname")).Value = email;
+
+
+                //LogHelper.logger.Info("Creating 10minutemail new email id");
+
+                //explore.GoTo(Helper._10_MINUTE_MAIL_URL);
+                //explore.WaitForComplete();
+                //string emailID = explore.TextField(Find.ById(Helper._10_MINUTE_EMAIL_TEXTBOX_ID)).Value;
+
+                //LogHelper.logger.Info("emailID is : " + emailID);
+                //LogHelper.logger.Info("Creating Uploaded.net new account with 10minute email id");
+
+                //CreateUploadLogin(emailID);
+
+                //LogHelper.logger.Info("Account created");
+                //LogHelper.logger.Info("Reading welcome email from uploaded.net");
+
+                //bool isConfirmationMailArrived = false;
+
+                //string confirmationUrl = string.Empty;
+
+                //while (!isConfirmationMailArrived)
+                //{
+                //    Thread.Sleep(20000);
+                //    explore.GoTo(Helper.CONFIRMATION_EMAIL_URL);
+                //    explore.WaitForComplete();
+
+                //    LogHelper.logger.Info("Extracting confirmation url");
+
+                //    confirmationUrl = GetConfirmationMailId(explore.Html);
+                //    if (!string.IsNullOrEmpty(confirmationUrl))
+                //    {
+                //        isConfirmationMailArrived = true;
+                //    }
+                //}
+                //LogHelper.logger.Info("Confirmation url: ");
+                //LogHelper.logger.Info("Hitting Confirmation url ");
+
+                //IE uploadedExplorer = new IE(confirmationUrl);
+
+                //LogHelper.logger.Info("Reading username password email ");
+
+                //Thread.Sleep(20000);
+                //explore.GoTo(Helper.PASSWORD_EMAIL_URL);
+                //explore.WaitForComplete();
+
+                //string newAccountId;
+                //string newPassword;
+
+                //LogHelper.logger.Info("Extracting username password email ");
+
+                //GetAccountIdAndPassword(explore, out newAccountId, out newPassword);
+
+                //LogHelper.logger.Info("username: " + newAccountId + "password: ");
+
+                //var period = PremiumPeriod._48Hours;
+                //if (rbtn48Hours.IsChecked == true)
+                //{
+                //    period = PremiumPeriod._48Hours;
+                //}
+                //else if (rbtn1Month.IsChecked == true)
+                //{
+                //    period = PremiumPeriod._1Month;
+                //}
+                //else if (rbtn3Months.IsChecked == true)
+                //{
+                //    period = PremiumPeriod._3Months;
+                //}
+                //else if (rbtn6Months.IsChecked == true)
+                //{
+                //    period = PremiumPeriod._6Months;
+                //}
+                //else if (rbtn1Year.IsChecked == true)
+                //{
+                //    period = PremiumPeriod._1Year;
+                //}
+
+                //var paysafePin1 = txtpaysafe_pin1.Text;
+                //var paysafePin2 = txtpaysafe_pin2.Text;
+                //var paysafePin3 = txtpaysafe_pin3.Text;
+                //var paysafePin4 = txtpaysafe_pin4.Text;
+
+                //bool finalStautus = RegisterForPremiumAccountWithReference(uploadedExplorer, period, emailID, paysafePin1, paysafePin2, paysafePin3, paysafePin4);
+                ////bool status = RegisterForPremiumAccount(newAccountId, newPassword, period, emailID, paysafe_pin1, paysafe_pin2, paysafe_pin3, paysafe_pin4);
+
+                ////explore.Close();
+                //MessageBox.Show(Helper.REGISTRATION_SUCCESSFUL_LOG);
+                //this.Close();
+                //RegistrationSuccessful = true;
+                //AccountId = newAccountId;
+                //Password = newPassword;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.logger.Error(ex);
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                Mouse.OverrideCursor = null;
+                frmWait.Close();
+            }
+        }
+        private void RegisterOldWay()
+        {
+            Wait frmWait = new Wait();
+            try
+            {
+                MessageBox.Show(Helper.PLEASE_WAIT_LOG);
+                Mouse.OverrideCursor = Cursors.Wait;
+
+                //Settings.Instance.MakeNewIeInstanceVisible = false;
+
+                IE explore = new IE();
+                explore.ClearCache();
+                explore.ClearCookies();
+                explore.WaitForComplete();
+                explore.ShowWindow(NativeMethods.WindowShowStyle.Maximize);
+
+
+
+                LogHelper.logger.Info("Creating 10minutemail new email id");
+
+                explore.GoTo(Helper._10_MINUTE_MAIL_URL);
+                explore.WaitForComplete();
+                string emailID = explore.TextField(Find.ById(Helper._10_MINUTE_EMAIL_TEXTBOX_ID)).Value;
+
+                LogHelper.logger.Info("emailID is : " + emailID);
+                LogHelper.logger.Info("Creating Uploaded.net new account with 10minute email id");
+
+                CreateUploadLogin(emailID);
+
+                LogHelper.logger.Info("Account created");
+                LogHelper.logger.Info("Reading welcome email from uploaded.net");
+
+                bool isConfirmationMailArrived = false;
+
+                string confirmationUrl = string.Empty;
+
+                while (!isConfirmationMailArrived)
+                {
+                    Thread.Sleep(20000);
+                    explore.GoTo(Helper.CONFIRMATION_EMAIL_URL);
+                    explore.WaitForComplete();
+
+                    LogHelper.logger.Info("Extracting confirmation url");
+
+                    confirmationUrl = GetConfirmationMailId(explore.Html);
+                    if (!string.IsNullOrEmpty(confirmationUrl))
+                    {
+                        isConfirmationMailArrived = true;
+                    }
+                }
+                LogHelper.logger.Info("Confirmation url: ");
+                LogHelper.logger.Info("Hitting Confirmation url ");
+
+                IE uploadedExplorer = new IE(confirmationUrl);
+
+                LogHelper.logger.Info("Reading username password email ");
+
+                Thread.Sleep(20000);
+                explore.GoTo(Helper.PASSWORD_EMAIL_URL);
+                explore.WaitForComplete();
+
+                string newAccountId;
+                string newPassword;
+
+                LogHelper.logger.Info("Extracting username password email ");
+
+                GetAccountIdAndPassword(explore, out newAccountId, out newPassword);
+
+                LogHelper.logger.Info("username: " + newAccountId + "password: ");
+
+                var period = PremiumPeriod._48Hours;
+                if (rbtn48Hours.IsChecked == true)
+                {
+                    period = PremiumPeriod._48Hours;
+                }
+                else if (rbtn1Month.IsChecked == true)
+                {
+                    period = PremiumPeriod._1Month;
+                }
+                else if (rbtn3Months.IsChecked == true)
+                {
+                    period = PremiumPeriod._3Months;
+                }
+                else if (rbtn6Months.IsChecked == true)
+                {
+                    period = PremiumPeriod._6Months;
+                }
+                else if (rbtn1Year.IsChecked == true)
+                {
+                    period = PremiumPeriod._1Year;
+                }
+
+                var paysafePin1 = txtpaysafe_pin1.Text;
+                var paysafePin2 = txtpaysafe_pin2.Text;
+                var paysafePin3 = txtpaysafe_pin3.Text;
+                var paysafePin4 = txtpaysafe_pin4.Text;
+
+                bool finalStautus = RegisterForPremiumAccountWithReference(uploadedExplorer, period, emailID, paysafePin1, paysafePin2, paysafePin3, paysafePin4);
                 //bool status = RegisterForPremiumAccount(newAccountId, newPassword, period, emailID, paysafe_pin1, paysafe_pin2, paysafe_pin3, paysafe_pin4);
 
-                explore.Close();
+                //explore.Close();
                 MessageBox.Show(Helper.REGISTRATION_SUCCESSFUL_LOG);
                 this.Close();
                 RegistrationSuccessful = true;
@@ -153,15 +344,11 @@ namespace Ultrasonic.DownloadManager
             }
             catch (Exception ex)
             {
-                loggingInformation.Append(Environment.NewLine + "Exception");
-                loggingInformation.Append(Environment.NewLine + ex.Message);
-                File.WriteAllText(Helper.LOGGING_FILE_PATH, loggingInformation.ToString());
-                
+                LogHelper.logger.Error(ex);
                 MessageBox.Show(ex.Message);
             }
             finally
             {
-                File.WriteAllText(Helper.LOGGING_FILE_PATH, loggingInformation.ToString());
                 Mouse.OverrideCursor = null;
                 frmWait.Close();
             }
@@ -183,7 +370,7 @@ namespace Ultrasonic.DownloadManager
             bool result = false;
             try
             {
-                loggingInformation.Append("Redirect to Register page " + Environment.NewLine);
+                LogHelper.logger.Info("Redirect to Register page ");
 
                 uploadedExplorer.GoTo("http://Ul.to/ref/6335349");
                 uploadedExplorer.WaitForComplete();
@@ -192,27 +379,27 @@ namespace Ultrasonic.DownloadManager
                 switch (period)
                 {
                     case PremiumPeriod._48Hours:
-                        loggingInformation.Append("Selecting premium registration duration 2 days " + Environment.NewLine);
+                        LogHelper.logger.Info("Selecting premium registration duration 2 days ");
                         uploadedExplorer.GoTo(Helper._2_DAYS_PREMIUM_DURATION_URL);
                         isValidPeriod = true;
                         break;
                     case PremiumPeriod._1Month:
-                        loggingInformation.Append("Selecting premium registration duration 1 month " + Environment.NewLine);
+                        LogHelper.logger.Info("Selecting premium registration duration 1 month ");
                         uploadedExplorer.GoTo(Helper._1_MONTH_PREMIUM_DURATION_URL);
                         isValidPeriod = true;
                         break;
                     case PremiumPeriod._3Months:
-                        loggingInformation.Append("Selecting premium registration duration 3 month " + Environment.NewLine);
+                        LogHelper.logger.Info("Selecting premium registration duration 3 month ");
                         uploadedExplorer.GoTo(Helper._3_MONTHS_PREMIUM_DURATION_URL);
                         isValidPeriod = true;
                         break;
                     case PremiumPeriod._6Months:
-                        loggingInformation.Append("Selecting premium registration duration 6 month " + Environment.NewLine);
+                        LogHelper.logger.Info("Selecting premium registration duration 6 month ");
                         uploadedExplorer.GoTo(Helper._6_MONTHS_PREMIUM_DURATION_URL);
                         isValidPeriod = true;
                         break;
                     case PremiumPeriod._1Year:
-                        loggingInformation.Append("Selecting premium registration duration 1 year " + Environment.NewLine);
+                        LogHelper.logger.Info("Selecting premium registration duration 1 year");
                         uploadedExplorer.GoTo(Helper._1_YEAR_PREMIUM_DURATION_URL);
                         isValidPeriod = true;
                         break;
@@ -220,39 +407,63 @@ namespace Ultrasonic.DownloadManager
 
                 if (isValidPeriod)
                 {
+                    Thread.Sleep(3000);
                     uploadedExplorer.WaitForComplete();
 
-                    loggingInformation.Append("Check terms and condition check box " + Environment.NewLine);
-                    uploadedExplorer.CheckBox(Find.ById("pinForm:acceptTerms")).Checked = true;
-                    uploadedExplorer.WaitForComplete();
+                    LogHelper.logger.Info("Check terms and condition check box ");
+                    var frames = uploadedExplorer.Frames;
+                    if (frames != null && frames.Count>0 && frames[0].CheckBoxes.Count>0)
+                    {
+                        frames[0].CheckBoxes[0].Checked = true;
+                    }
+                    if (frames != null && frames.Count > 0)
+                    {
+                        var pinTextField = frames[0].TextField(Find.ById("pinForm:rn01"));
+                        if (pinTextField != null)
+                        {
+                            LogHelper.logger.Info("Entering paysafe pin 1: " + paysafe_pin1);
+                            frames[0].TextField(Find.ById("pinForm:rn01")).Value = paysafe_pin1;
+                            uploadedExplorer.WaitForComplete();
+                        }
+                        pinTextField = frames[0].TextField(Find.ById("pinForm:rn02"));
+                        if (pinTextField != null)
+                        {
+                            LogHelper.logger.Info("Entering paysafe pin 2: " + paysafe_pin2);
+                            frames[0].TextField(Find.ById("pinForm:rn02")).Value = paysafe_pin2;
+                            uploadedExplorer.WaitForComplete();
+                        }
+                        pinTextField = frames[0].TextField(Find.ById("pinForm:rn03"));
+                        if (pinTextField != null)
+                        {
+                            LogHelper.logger.Info("Entering paysafe pin 3: " + paysafe_pin3);
+                            frames[0].TextField(Find.ById("pinForm:rn03")).Value = paysafe_pin3;
+                            uploadedExplorer.WaitForComplete();
+                        }
+                        pinTextField = frames[0].TextField(Find.ById("pinForm:rn04"));
+                        if (pinTextField != null)
+                        {
+                            LogHelper.logger.Info("Entering paysafe pin 4: " + paysafe_pin4);
+                            frames[0].TextField(Find.ById("pinForm:rn04")).Value = paysafe_pin4;
+                            uploadedExplorer.WaitForComplete();
+                        }
+                    }
+                    LogHelper.logger.Info("Submitting paysafe pin code for registration ");
 
-                    loggingInformation.Append("Entering paysafe pin 1: " + paysafe_pin1 + Environment.NewLine);
-                    uploadedExplorer.TextField(Find.ById("pinForm:rn01")).TypeText(paysafe_pin1);
-                    uploadedExplorer.WaitForComplete();
-
-                    loggingInformation.Append("Entering paysafe pin 2: " + paysafe_pin2 + Environment.NewLine);
-                    uploadedExplorer.TextField(Find.ById("pinForm:rn02")).TypeText(paysafe_pin2);
-                    uploadedExplorer.WaitForComplete();
-
-                    loggingInformation.Append("Entering paysafe pin 3: " + paysafe_pin3 + Environment.NewLine);
-                    uploadedExplorer.TextField(Find.ById("pinForm:rn03")).TypeText(paysafe_pin3);
-                    uploadedExplorer.WaitForComplete();
-
-                    loggingInformation.Append("Entering paysafe pin 4: " + paysafe_pin4 + Environment.NewLine);
-                    uploadedExplorer.TextField(Find.ById("pinForm:rn04")).TypeText(paysafe_pin4);
-                    uploadedExplorer.WaitForComplete();
-
-                    loggingInformation.Append("Submitting paysafe pin code for registration " + Environment.NewLine);
-                    uploadedExplorer.Button(Find.ById("pinForm:pay")).ClickNoWait();
-                    uploadedExplorer.WaitForComplete();
-                    loggingInformation.Append("Submitting finished " + Environment.NewLine);
+                    var submitButton = frames[0].Button(Find.ByName("pinForm:pay"));
+                    if (submitButton != null)
+                    {
+                        submitButton.Click();
+                        uploadedExplorer.WaitForComplete();
+                    }
+                    //uploadedExplorer.Button(Find.ById("pinForm:pay")).ClickNoWait();
+                    LogHelper.logger.Info("Submitting finished ");
 
                 }
                 Thread.Sleep(10000);
-                loggingInformation.Append("Logging out of uploaded.net " + Environment.NewLine);
+                LogHelper.logger.Info("Logging out of uploaded.net");
                 uploadedExplorer.GoTo("http://uploaded.net/logout");
                 uploadedExplorer.WaitForComplete();
-                loggingInformation.Append("Log out successful. " + Environment.NewLine);
+                LogHelper.logger.Info("Log out successful.");
 
                 uploadedExplorer.Close();
                 uploadedExplorer.WaitForComplete();
@@ -339,14 +550,14 @@ namespace Ultrasonic.DownloadManager
             try
             {
                 Dictionary<string, string> RequestCookies = new Dictionary<string, string>();
-                string url = "http://uploaded.net/io/register/free";
+                string url = "https://uploaded.net/io/register/free";
                 HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
-                request.Referer = "http://uploaded.net/register";
+                request.Referer = "https://uploaded.net/register";
                 request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
                 request.Method = "POST";
                 request.ServicePoint.Expect100Continue = false;
 
-                string postData = "mail=" + emailID;
+                string postData = "mail=" + emailID + "&firstname=abc&lastname=xyz";
                 //string postData = "mail=freelanc1.john@gmail.com";
 
                 var data = Encoding.ASCII.GetBytes(postData);
