@@ -1,51 +1,55 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="iso-8859-1"?>
 <filelist>
   <ftpuser>7160709</ftpuser>
   <ftppass>cpyzzbwy</ftppass>
   <location>/var/www/uploaded/files/movies</location>
   <location name="Music">/var/www/uploaded/files/music</location>
   <volume>10000000</volume>
-  <file filename="rock" id="f6f8186daabe6c58995d9c9246e09e8c">
-    <location>/var/www/uploaded/files/music/</location>
+
+  <file filename="TestMovie" id="DD784AF5-A87B-4BDC-BAAD-3A7079FF6BA1">
+    <location>/ftp/Movies/</location>	
     <list>
-      <item name="Bong hong cai ao - bang kieu.MP3">
-        <path>/var/www/uploaded/files/music/rock/Bong hong cai ao - bang kieu.MP3</path>
-      </item>
-      <item name="Trai tim ben le.mp3">
-        <path>/var/www/uploaded/files/music/rock/bangkieu/Trai tim ben le.mp3</path>
+      <item name="TestMovie">
+        <path>/ftp/Movies/TestMovie/</path>
       </item>
     </list>
   </file>
-  <file filename="myfile" id="f6f8186daabe6c58995d9c9246e09e8c">
-    <location>/var/www/uploaded/files/music/</location>
+  
+  <file filename="Transformers 3 Dark of the Moon" id="DD784AF5-A87B-4BDC-BAAD-3A7079FF6BAD">
+    <location>/var/www/uploaded/files/movies/Adventure</location>	
     <list>
-      <item name="Bong hong cai ao - bang kieu.MP3">
-        <path>/var/www/uploaded/files/music/rock/Bong hong cai ao - bang kieu.MP3</path>
+      <item name="Transofmers 3 Dark of the Moon 2011 1080p BlueRay AC3 DL x264 - HDC">
+        <path>/ftp/Movies/Transformers/Transformers 3 Dark of the Moon/Transofmers 3 Dark of the Moon 2011 1080p BlueRay AC3 DL x264 - HDC/></path>
       </item>
-      <item name="Trai tim ben le.mp3">
-        <path>/var/www/uploaded/files/music/rock/bangkieu/Trai tim ben le.mp3</path>
+      <item name="Transofmers 3 Dark of the Moon 2011 German AC3 DBRip x264 - WodkaE">
+        <path>/ftp/Movies/Transformers/Transformers 3 Dark of the Moon/Transofmers 3 Dark of the Moon 2011 German AC3 DBRip x264 - WodkaE/</path>
+      </item>
+      <item name="Transofmers 3 Dark of the Moon 2011 German DL 720p BlueRay x264 - PRiViLEGED">
+        <path>/ftp/Movies/Transformer/Transformers 3 Dark of the Moon/Transofmers 3 Dark of the Moon 2011 German DL 720p BlueRay x264 - PRiViLEGED/</path>
       </item>
     </list>
   </file>
-  <file filename="old" id="f6f8186daabe6c58995d9c9246e09e8c">
-    <location>/var/www/uploaded/files/music/</location>
+
+  <file filename="Transformers 4 Aera des Untergangs" id="6C426C01-8FEB-4C0F-9AC9-55D039932D6">
+    <location>/var/www/uploaded/files/movies/</location>
     <list>
-      <item name="Bong hong cai ao - bang kieu.MP3">
-        <path>/var/www/uploaded/files/music/rock/Bong hong cai ao - bang kieu.MP3</path>
+      <item name="Transformers 4 Aera des Untergangs 2014 German AC3 720p BlueRay x264 - FDHD">
+        <path>/ftp/Movies/Transformers/Transformers 4 Aera des Untergangs/Transformers 4 Aera des Untergangs 2014 German AC3 720p BlueRay x264 - FDHD/</path>
       </item>
-      <item name="Trai tim ben le.mp3">
-        <path>/var/www/uploaded/files/music/rock/bangkieu/Trai tim ben le.mp3</path>
+      <item name="Transformers 4 Aera des Untergangs 2014 German AC3 DL BDRip XVID - KOC">
+        <path>/ftp/Movies/Transformers/Transformers 4 Aera des Untergangs/Transformers 4 Aera des Untergangs 2014 German AC3 DL BDRip XVID - KOC/</path>
       </item>
-    </list>
-  </file>
-  <file filename="news" id="f6f8186daabe6c58995d9c9246e09e8c">
-    <location>/var/www/uploaded/files/music/</location>
-    <list>
-      <item name="Bong hong cai ao - bang kieu.MP3">
-        <path>/var/www/uploaded/files/music/rock/Bong hong cai ao - bang kieu.MP3</path>
+      <item name="Transformers 4 Aera des Untergangs 2014 MULTi COMPLETE BLUERAY - UNTOUCHED">
+        <path>/ftp/Movies/Transformers/Transformers 4 Aera des Untergangs/Transformers 4 Aera des Untergangs 2014 MULTi COMPLETE BLUERAY - UNTOUCHED/</path>
       </item>
-      <item name="Trai tim ben le.mp3">
-        <path>/var/www/uploaded/files/music/rock/bangkieu/Trai tim ben le.mp3</path>
+      <item name="Transformers 4 Aera des Untergangs 3D German 720p BlueRay x264 - ETM">
+        <path>/ftp/Movies/Transformers/Transformers 4 Aera des Untergangs/Transformers 4 Aera des Untergangs 3D German 720p BlueRay x264 - ETM/</path>
+      </item>
+      <item name="Transformers 4 Aera des Untergangs 2014 BDRip AC3 German x264 - POE">
+        <path>/ftp/Movies/Transformers/Transformers 4 Aera des Untergangs/Transformers 4 Aera des Untergangs 2014 BDRip AC3 German x264 - POE/</path>
+      </item>
+      <item name="Transformers 4 Aera des Untergangs German DL 1080p BlueRay x264 - EXQUiSiTE">
+        <path>/ftp/Movies/Transformers/Transformers 4 Aera des Untergangs/Transformers 4 Aera des Untergangs German DL 1080p BlueRay x264 - EXQUiSiTE/</path>
       </item>
     </list>
   </file>

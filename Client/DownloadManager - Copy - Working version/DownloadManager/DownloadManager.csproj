@@ -65,6 +65,9 @@
     <Reference Include="ReactiveUI.Xaml">
       <HintPath>..\..\..\..\..\..\..\..\..\Balram Data\ReactiveUI 4.0.2\Net40\ReactiveUI.Xaml.dll</HintPath>
     </Reference>
+    <Reference Include="Renci.SshNet">
+      <HintPath>..\..\..\..\..\..\..\Downloads\SharpSSH-1.1.1.13.src\SharpSSH-1.1.1.13.src\packages\SSH.NET.2013.4.7\lib\net40\Renci.SshNet.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />

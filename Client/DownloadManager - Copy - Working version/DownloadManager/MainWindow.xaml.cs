@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Xml;
 using System.Xml.Linq;
+using Renci.SshNet;
 using Ultrasonic.DownloadManager.DownloadManagerService;
 using Ultrasonic.DownloadManager.Model;
 
@@ -130,7 +131,7 @@ namespace Ultrasonic.DownloadManager
         {
             List<string> downloadUriParts = ((Hyperlink)e.OriginalSource).NavigateUri.OriginalString.Split(Helper.DOWNLOAD_URI_SEPARATOR_CHAR).ToList<string>();
             
-            string tempPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string tempPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\test\\";
             string fileName=string.Empty;
             string finalDownloadUrl = string.Empty;
 
@@ -139,15 +140,16 @@ namespace Ultrasonic.DownloadManager
 
             totalDownloadParts = downloadUriParts.Count;
             totalPartsDownloaded = 0;
+            string firstFilePartDownloaded = string.Empty;
             foreach (string downloadUri in downloadUriParts)
             {
                 if (downloadUri.Contains("#"))
                 {
-                    finalDownloadUrl = GetFinalDownloadUrl(downloadUri.Split('#')[0]);
+                    finalDownloadUrl = downloadUri.Split('#')[0];
                 }
                 else
                 {
-                    finalDownloadUrl = GetFinalDownloadUrl(downloadUri);
+                    finalDownloadUrl = downloadUri;
                 }
 
 
@@ -164,16 +166,20 @@ namespace Ultrasonic.DownloadManager
                 {
                     fileName = tempPath + "\\" + actualFileName + ".7z." + counter.ToString();
                 }
+                if (counter == 1)
+                    firstFilePartDownloaded = fileName;
                 counter++;
-                using (WebClient client = new WebClient())
-                {
-                    allDownloadedFileParts.Add(fileName);
+                DownloadFileFromSFTP(finalDownloadUrl, fileName);
+                //using (WebClient client = new WebClient())
+                //{
+                //    allDownloadedFileParts.Add(fileName);
 
-                    client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
-                    client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
-                    client.DownloadFileAsync(new Uri(finalDownloadUrl), fileName);
-                }
+                //    client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
+                //    client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
+                //    client.DownloadFileAsync(new Uri(finalDownloadUrl), fileName);
+                //}
             }
+            UnZipFileUsing7Zip(firstFilePartDownloaded, tempPath, "balram");
         }
 
         /// <summary>
@@ -383,6 +389,33 @@ namespace Ultrasonic.DownloadManager
             }
 
             return finalDownloadUrl;
+        }
+
+        public void DownloadFileFromSFTP(string downloadUrl,string localFileName)
+        {
+            try
+            {
+                string host = "95.89.83.26";
+                string username = "balram";
+                string password = "balram";
+                string remoteFileName = downloadUrl;
+
+                using (var sftp = new SftpClient(host, 64888, username, password))
+                {
+                    sftp.Connect();
+
+                    using (var file = File.OpenWrite(localFileName))
+                    {
+                        sftp.DownloadFile(remoteFileName, file);
+                    }
+
+                    sftp.Disconnect();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         /// <summary>

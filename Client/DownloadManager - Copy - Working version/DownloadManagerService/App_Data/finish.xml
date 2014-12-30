@@ -1,10 +1,16 @@
 <filelist>
-  <file filename="Test" id="f145f6e9eee1f6a4508fe3401921785d" uploaded="yes">
-    <location>/var/www/uploaded/files/movies/</location>
+  <file filename="TestMovie" id="DD784AF5-A87B-4BDC-BAAD-3A7079FF6BA1" uploaded="yes">
+    <location>/ftp/Movies/</location>
     <password>uploaded.net</password>
     <upload number="1">
-      <part partname="450b240041">
-        <link>http://ul.to/b4b5540m</link>
+      <part partname="TestMovie.7z.001">
+        <link>/ftp/Movies/TestMovie/TestMovie.7z.001</link>
+      </part>
+	  <part partname="TestMovie.7z.002">
+        <link>/ftp/Movies/TestMovie/TestMovie.7z.002</link>
+      </part>
+	  <part partname="TestMovie.7z.003">
+        <link>/ftp/Movies/TestMovie/TestMovie.7z.003</link>
       </part>
     </upload>
     <list>
