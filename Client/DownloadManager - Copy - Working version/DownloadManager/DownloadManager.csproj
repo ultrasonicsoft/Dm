@@ -105,17 +105,17 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BoundPasswordBox.cs" />
+    <Compile Include="Service References\DownloadManagerService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\NewUserViewModel.cs" />
     <Compile Include="View\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\User.cs" />
     <Compile Include="Repository\ServiceRepository.cs" />
-    <Compile Include="Service References\DownloadManagerService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="View\NewUser.xaml.cs">
       <DependentUpon>NewUser.xaml</DependentUpon>
@@ -185,11 +185,11 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Service References\DownloadManagerService\DownloadDataProviderService.wsdl" />
-    <None Include="Service References\DownloadManagerService\DownloadDataProviderService.xsd">
+    <None Include="Service References\DownloadManagerService\service.wsdl" />
+    <None Include="Service References\DownloadManagerService\service.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DownloadManagerService\DownloadDataProviderService1.xsd">
+    <None Include="Service References\DownloadManagerService\service1.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
@@ -204,9 +204,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\DownloadManagerService\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\DownloadManagerService\DownloadDataProviderService.disco" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\DownloadManagerService\configuration91.svcinfo" />
