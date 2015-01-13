@@ -2,133 +2,175 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="http://schemas.Ultrasonicsoft.com/wpf/xaml/presentation"        
-        Title="MainWindow" Height="488" Width="984"
+        Title="UVBrain Download Manager" Height="550" Width="984"
         x:Name="This">
-    
-    <Window.Resources>        
+
+    <Window.Resources>
         <HierarchicalDataTemplate x:Key="TreeViewSampleTemplate"  ItemsSource="{Binding Path=Children}">
             <TextBlock Text="{Binding Name}" />
         </HierarchicalDataTemplate>
     </Window.Resources>
-    
+
     <Grid>
-        <Rectangle Height="461" HorizontalAlignment="Left" Name="rectangle1" Stroke="Black" VerticalAlignment="Top" Width="227">
-            <Rectangle.Fill>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#EA6B7212" Offset="0.983" />
-                    <GradientStop Color="#7B729299" Offset="0.099" />
-                </LinearGradientBrush>
-            </Rectangle.Fill>
-        </Rectangle>
-
-        <Button Content="Home" Height="36" HorizontalAlignment="Left" Margin="22,63,0,0" Name="button1" VerticalAlignment="Top" Width="183" BorderBrush="Blue" FontSize="16" FontFamily="Palatino Linotype" FontStretch="Expanded" FontWeight="Bold" Foreground="Red">
-            <Button.Background>
-                <RadialGradientBrush>
-                    <GradientStop Color="#FFD6E5F3" Offset="0.25" />
-                    <GradientStop Color="#FF4FD8CE" Offset="1" />
-                </RadialGradientBrush>
-            </Button.Background>
-        </Button>
-        <Button BorderBrush="Blue" Content="Account Information" FontFamily="Palatino Linotype" FontSize="16" FontStretch="Expanded" FontWeight="Bold" Foreground="Red" Height="36" HorizontalAlignment="Left" Margin="22,146,0,0" Name="button2" VerticalAlignment="Top" Width="183">
-            <Button.Background>
-                <RadialGradientBrush>
-                    <GradientStop Color="#FFD6E5F3" Offset="0.25" />
-                    <GradientStop Color="#FF4FD8CE" Offset="1" />
-                </RadialGradientBrush>
-            </Button.Background>
-        </Button>
-        <Button BorderBrush="Blue" Content="Download" FontFamily="Palatino Linotype" FontSize="16" FontStretch="Expanded" FontWeight="Bold" Foreground="Red" Height="36" HorizontalAlignment="Left" Margin="22,223,0,0" Name="button3" VerticalAlignment="Top" Width="183">
-            <Button.Background>
-                <RadialGradientBrush>
-                    <GradientStop Color="#FFD6E5F3" Offset="0.25" />
-                    <GradientStop Color="#FF4FD8CE" Offset="1" />
-                </RadialGradientBrush>
-            </Button.Background>
-        </Button>
-        <Button BorderBrush="Blue" Content="Download Status" FontFamily="Palatino Linotype" FontSize="16" FontStretch="Expanded" FontWeight="Bold" Foreground="Red" Height="36" HorizontalAlignment="Left" Margin="22,310,0,0" Name="button4" VerticalAlignment="Top" Width="183">
-            <Button.Background>
-                <RadialGradientBrush>
-                    <GradientStop Color="#FFD6E5F3" Offset="0.25" />
-                    <GradientStop Color="#FF4FD8CE" Offset="1" />
-                </RadialGradientBrush>
-            </Button.Background>
-        </Button>
-        <Button BorderBrush="Blue" Content="FAQ" FontFamily="Palatino Linotype" FontSize="16" FontStretch="Expanded" FontWeight="Bold" Foreground="Red" Height="36" HorizontalAlignment="Left" Margin="22,396,0,0" Name="button5" VerticalAlignment="Top" Width="183">
-            <Button.Background>
-                <RadialGradientBrush>
-                    <GradientStop Color="#FFD6E5F3" Offset="0.25" />
-                    <GradientStop Color="#FF4FD8CE" Offset="1" />
-                </RadialGradientBrush>
-            </Button.Background>
-        </Button>
-        <Label Content="Categories" Height="28" HorizontalAlignment="Left" Margin="233,17,0,0" Name="label1" VerticalAlignment="Top" />
-        <Label Content="Search" Height="28" Margin="720,20,13,0" Name="label3" VerticalAlignment="Top" />
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="771,22,0,0" Name="textBox1" VerticalAlignment="Top" Width="164" />
-        <Label Content="Information" Height="28" HorizontalAlignment="Left" Margin="511,18,0,0" Name="label2" VerticalAlignment="Top" />
-
-        <controls:ComboView x:Name="cbCategories" ItemsSource="{Binding ViewItemsSource, ElementName=This}"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="75"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="300"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Categories" 
+               HorizontalAlignment="Right" 
+               VerticalAlignment="Center"
+               Grid.Column="0"
+               Grid.Row="0"/>
+        <controls:ComboView x:Name="cbCategories"
+                            ItemsSource="{Binding ViewItemsSource, ElementName=This}"
                             SelectionMode="Normal"
                             SelectionHeader=""
                             SelectionDisplayMemberPath="Name"
                             DropDownClosed="cbCategories_DropDownClosed"
                             ItemTemplate="{StaticResource TreeViewSampleTemplate}"
                             CloseDropDownUponSelection="True"
-                            Width="200" Height="23" Margin="305,20,0,406" HorizontalAlignment="Left">
+                            Width="200" Height="23"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Grid.Column="1"
+                            Grid.Row="0">
+            <controls:ComboView.ItemsViewTemplate>
+                <DataTemplate>
+                    <controls:ExtendedTreeView BorderThickness="0"
+                                               EnableCheckBoxView="True" />
+                </DataTemplate>
+            </controls:ComboView.ItemsViewTemplate>
+        </controls:ComboView>
+        <Label Content="Search"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center"
+               Grid.Column="4"
+               Grid.Row="0"/>
+        <TextBox x:Name="_searchText"
+                 HorizontalAlignment="Left" 
+                 VerticalAlignment="Center"
+                 Width="150"
+                 Grid.Column="5"
+                 Grid.Row="0"/>
+        <Label Content="Information"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center"
+               Grid.Column="2"
+               Grid.Row="0"/>
+        <controls:ComboView x:Name="cbInformation"
+                            CloseDropDownUponSelection="True"
+                            Height="23" 
+                            ItemTemplate="{StaticResource TreeViewSampleTemplate}"
+                            ItemsSource="{Binding ViewItemsSourceInformation, ElementName=This}" 
+                            SelectionDisplayMemberPath="Name"
+                            DropDownClosed ="cbInformation_DropDownClosed"
+                            SelectionHeader=""
+                            SelectionMode="Normal"
+                            Grid.Column="3"
+                            Grid.Row="0">
             <controls:ComboView.ItemsViewTemplate>
                 <DataTemplate>
                     <controls:ExtendedTreeView BorderThickness="0" EnableCheckBoxView="True" />
                 </DataTemplate>
             </controls:ComboView.ItemsViewTemplate>
         </controls:ComboView>
-        <DockPanel Height="322" HorizontalAlignment="Left" Margin="233,63,0,0" Name="dockPanel1" VerticalAlignment="Top" Width="695">
-            <DataGrid x:Name="dgFileList" AutoGenerateColumns="False" Width="702" Height="323" AlternationCount="2">
-                <DataGrid.RowStyle>
-                    <Style TargetType="{x:Type DataGridRow}">
-                        <Style.Triggers>
-                            <Trigger Property="AlternationIndex" Value="0">
-                                <Setter Property="Background" Value="BlanchedAlmond" />
-                            </Trigger>
-                            <Trigger Property="AlternationIndex" Value="1">
-                                <Setter Property="Background" Value="Lavender" />
-                            </Trigger>
-                            <DataTrigger Binding="{Binding Path=Selectable}" Value="False">
-                                <DataTrigger.Setters>
-                                    <Setter Property="Background" Value="LightGray" />
-                                </DataTrigger.Setters>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.RowStyle>
-                <DataGrid.Columns>
-                    <DataGridCheckBoxColumn Header="Select" Binding="{Binding IsSelected}" />
-                    <DataGridTextColumn Header="File Name" Binding="{Binding FileName}" Width="550"/>
-                    <DataGridHyperlinkColumn Header="Download" Binding="{Binding Path=DownloadUri}" ContentBinding="{Binding Path=DownloadText}" Width="100">
-                        <DataGridHyperlinkColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <EventSetter Event="Hyperlink.Click" Handler="OnHyperLinkClick" />                                
-                            </Style>
-                        </DataGridHyperlinkColumn.ElementStyle>
-                    </DataGridHyperlinkColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-        </DockPanel>
-        <controls:ComboView x:Name="cbInformation" CloseDropDownUponSelection="True" Height="23" 
-                            ItemTemplate="{StaticResource TreeViewSampleTemplate}" ItemsSource="{Binding ViewItemsSourceInformation, ElementName=This}" 
-                            Margin="579,22,248,404" SelectionDisplayMemberPath="Name" DropDownClosed ="cbInformation_DropDownClosed"
-                            SelectionHeader="" SelectionMode="Normal">
-            <controls:ComboView.ItemsViewTemplate>
-                <DataTemplate>
-                    <controls:ExtendedTreeView BorderThickness="0" EnableCheckBoxView="True" />
-                </DataTemplate>
-            </controls:ComboView.ItemsViewTemplate>
-        </controls:ComboView>
-        <Button Content="Download" Height="23" HorizontalAlignment="Left" Margin="233,396,0,0" Name="btnDownloadAll" VerticalAlignment="Top" Width="75"  Click="btnDownloadAll_Click" Background="Lavender" />
-        <ProgressBar Height="25" HorizontalAlignment="Left" Margin="416,412,0,0" Name="progressBar1" VerticalAlignment="Top" Width="512" />
-        <Grid.Background>
-            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                <GradientStop Color="#00000000" Offset="1" />
-                <GradientStop Color="White" Offset="0" />
-            </LinearGradientBrush>
-        </Grid.Background>
+
+        <DataGrid x:Name="dgFileList"
+                  AutoGenerateColumns="False"
+                  AlternationCount="2"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="5"
+                  Margin="5,0,0,0"
+                  Grid.Row="1">
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Style.Triggers>
+                        <Trigger Property="AlternationIndex" Value="0">
+                            <Setter Property="Background" Value="BlanchedAlmond" />
+                        </Trigger>
+                        <Trigger Property="AlternationIndex" Value="1">
+                            <Setter Property="Background" Value="Lavender" />
+                        </Trigger>
+                        <DataTrigger Binding="{Binding Path=Selectable}" Value="False">
+                            <DataTrigger.Setters>
+                                <Setter Property="Background" Value="LightGray" />
+                            </DataTrigger.Setters>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn Header="Select" Binding="{Binding IsSelected}" />
+                <DataGridTextColumn Header="File Name" Binding="{Binding FileName}" Width="550"/>
+                <DataGridHyperlinkColumn Header="Download" Binding="{Binding Path=DownloadUri}" ContentBinding="{Binding Path=DownloadText}" Width="100">
+                    <DataGridHyperlinkColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <EventSetter Event="Hyperlink.Click" Handler="OnHyperLinkClick" />
+                        </Style>
+                    </DataGridHyperlinkColumn.ElementStyle>
+                </DataGridHyperlinkColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Column="0"
+                    Grid.Row="2"
+                    Grid.ColumnSpan="6"
+                    Height="Auto">
+            <Button Content="Download All" 
+                    HorizontalAlignment="Left" 
+                    Name="btnDownloadAll" 
+                    VerticalAlignment="Center"
+                    Width="100"
+                    Click="btnDownloadAll_Click"
+                    Background="Lavender"
+                    Margin="10,0,0,0"/>
+            <ProgressBar Height="25"
+                         HorizontalAlignment="Left"
+                         Name="progressBar1"
+                         VerticalAlignment="Center"
+                         Margin="20,0,0,0"
+                         Width="512"
+                         Visibility="Collapsed"/>
+            <ScrollViewer>
+                <ItemsControl ItemsSource="{Binding FileDownloads}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0"
+                                           Grid.Column="0"
+                                           Text="{Binding FileName}" />
+                                <ProgressBar Grid.Row="0"
+                                             Grid.Column="1"
+                                             Minimum="0"
+                                             Maximum="100"
+                                             Value="{Binding Progress}" />
+                                <TextBlock Grid.Row="1"
+                                           Grid.Column="1"
+                                           Text="{Binding StatusText}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </StackPanel>
     </Grid>
 </Window>

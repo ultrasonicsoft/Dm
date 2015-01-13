@@ -1,16 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
 using System.Windows.Data;
+using ReactiveUI;
+using Ultrasonic.DownloadManager.Model;
 
 namespace Ultrasonic.DownloadManager
 {
-    public class MainWindowViewModel
+    public class MainWindowViewModel : ReactiveObject
     {
         public ICollectionView FilteredFiles { get; private set; }
 
+        private ObservableCollection<FTPFile> fileDownloads;
+
+        public ObservableCollection<FTPFile> FileDownloads
+        {
+            get { return fileDownloads; }
+            set { this.RaiseAndSetIfChanged(v => v.FileDownloads, ref fileDownloads, value); }
+        }
 
         public MainWindowViewModel()
         {
@@ -42,6 +52,7 @@ namespace Ultrasonic.DownloadManager
 
             FilteredFiles = CollectionViewSource.GetDefaultView(_files);
 
+            FileDownloads = new ObservableCollection<FTPFile>();
 
         }
     }

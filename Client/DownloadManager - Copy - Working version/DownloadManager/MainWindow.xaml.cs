@@ -9,13 +9,15 @@ using System.IO.Packaging;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Xml;
 using System.Xml.Linq;
-using Renci.SshNet;
 using Ultrasonic.DownloadManager.DownloadManagerService;
 using Ultrasonic.DownloadManager.Model;
+using WatiN.Core.DialogHandlers;
+using WatiN.Core.Logging;
 
 
 namespace Ultrasonic.DownloadManager
@@ -33,13 +35,23 @@ namespace Ultrasonic.DownloadManager
         private int totalDownloadParts = 0;
         private static int totalPartsDownloaded = 0;
         private User _loggedInUser;
+        private MainWindowViewModel viewModel;
+        private static long bytes_total;
+        static DateTime lastUpdate;
+        static string fileName = @"C:\Downloaded Files\balram.jpg";
+        static string serverUri = "ftp://balram@95.89.83.26:64888/ftp/Movies/TestMovie/balram.JPG";
+        static long lastBytes = 0;
+        private string ftpServerAddress = "ftp://balram@95.89.83.26:64888";
+        private bool isDownloading = false;
+        private List<FileDownloadStatus> _fileDownloadStatuses = new List<FileDownloadStatus>();
+        string downloadFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Downloaded\\";
 
         public User LoggedInUser
         {
             get { return _loggedInUser; }
             set { _loggedInUser = value; }
         }
-        
+
         #endregion
 
         #region Public Dependency Properties
@@ -71,7 +83,8 @@ namespace Ultrasonic.DownloadManager
         /// </summary>
         public MainWindow()
         {
-
+            viewModel = new MainWindowViewModel();
+            this.DataContext = viewModel;
             InitializeComponent();
 
             //Properties.Settings.Default.AccountID = "default";
@@ -129,59 +142,195 @@ namespace Ultrasonic.DownloadManager
         /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
         private void OnHyperLinkClick(object sender, RoutedEventArgs e)
         {
-            List<string> downloadUriParts = ((Hyperlink)e.OriginalSource).NavigateUri.OriginalString.Split(Helper.DOWNLOAD_URI_SEPARATOR_CHAR).ToList<string>();
-            
-            string tempPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\test\\";
-            string fileName=string.Empty;
-            string finalDownloadUrl = string.Empty;
-
-            string actualFileName = downloadUriParts[downloadUriParts.Count-1].Split('#')[1];
-            int counter = 1;
-
-            totalDownloadParts = downloadUriParts.Count;
-            totalPartsDownloaded = 0;
-            string firstFilePartDownloaded = string.Empty;
-            foreach (string downloadUri in downloadUriParts)
+            try
             {
-                if (downloadUri.Contains("#"))
-                {
-                    finalDownloadUrl = downloadUri.Split('#')[0];
-                }
-                else
-                {
-                    finalDownloadUrl = downloadUri;
-                }
 
 
-                //fileName = tempPath + "\\" + downloadUri.Split('/')[downloadUri.Split('/').Length - 1];
-                if (downloadUriParts.Count < 10)
-                {
-                    fileName = tempPath + "\\" + actualFileName + ".7z.00" + counter.ToString();
-                }
-                else if(downloadUriParts.Count>=10 && downloadUriParts.Count<100)
-                {
-                    fileName = tempPath + "\\" + actualFileName + ".7z.0" + counter.ToString();
-                }
-                else if (downloadUriParts.Count >= 100 && downloadUriParts.Count < 1000)
-                {
-                    fileName = tempPath + "\\" + actualFileName + ".7z." + counter.ToString();
-                }
-                if (counter == 1)
-                    firstFilePartDownloaded = fileName;
-                counter++;
-                DownloadFileFromSFTP(finalDownloadUrl, fileName);
-                //using (WebClient client = new WebClient())
-                //{
-                //    allDownloadedFileParts.Add(fileName);
+                List<string> downloadUriParts = ((Hyperlink)e.OriginalSource).NavigateUri.OriginalString.Split(Helper.DOWNLOAD_URI_SEPARATOR_CHAR).ToList<string>();
 
-                //    client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
-                //    client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
-                //    client.DownloadFileAsync(new Uri(finalDownloadUrl), fileName);
-                //}
+                string fileName = string.Empty;
+                string finalDownloadUrl = string.Empty;
+
+                string actualFileName = downloadUriParts[downloadUriParts.Count - 1].Split('#')[1];
+                int counter = 1;
+
+                //_fileDownloadStatuses = new List<FileDownloadStatus>{new FileDownloadStatus{TotalParts = downloadUriParts.Count, FileName = actualFileName} };
+                _fileDownloadStatuses.Add(new FileDownloadStatus
+                {
+                    TotalParts = downloadUriParts.Count,
+                    FileName = actualFileName,
+                    FirstFilePart = string.Concat(downloadFolderPath, "\\", actualFileName, ".7z.001")
+                });
+                totalDownloadParts = downloadUriParts.Count;
+                totalPartsDownloaded = 0;
+                string firstFilePartDownloaded = string.Empty;
+                foreach (string downloadUri in downloadUriParts)
+                {
+                    if (downloadUri.Contains("#"))
+                    {
+                        finalDownloadUrl = downloadUri.Split('#')[0];
+                    }
+                    else
+                    {
+                        finalDownloadUrl = downloadUri;
+                    }
+
+
+                    //fileName = tempPath + "\\" + downloadUri.Split('/')[downloadUri.Split('/').Length - 1];
+                    if (downloadUriParts.Count < 10)
+                    {
+                        fileName = downloadFolderPath + "\\" + actualFileName + ".7z.00" + counter.ToString();
+                    }
+                    else if (downloadUriParts.Count >= 10 && downloadUriParts.Count < 100)
+                    {
+                        fileName = downloadFolderPath + "\\" + actualFileName + ".7z.0" + counter.ToString();
+                    }
+                    else if (downloadUriParts.Count >= 100 && downloadUriParts.Count < 1000)
+                    {
+                        fileName = downloadFolderPath + "\\" + actualFileName + ".7z." + counter.ToString();
+                    }
+                    if (counter == 1)
+                        firstFilePartDownloaded = fileName;
+                    counter++;
+                    //if (counter > 2)
+                    //    break;
+                    var parts = finalDownloadUrl.Split('/');
+                    string filePartName = string.Empty;
+                    if (parts.Length > 0)
+                    {
+                        filePartName = parts[parts.Length - 1];
+                    }
+                    viewModel.FileDownloads.Add(new FTPFile() { FileName = filePartName });
+                    //DownloadFileFromSFTP(finalDownloadUrl, fileName);
+                    DownloadFTPFileAsync(finalDownloadUrl, fileName, filePartName, actualFileName);
+
+                    //using (WebClient client = new WebClient())
+                    //{
+                    //    allDownloadedFileParts.Add(fileName);
+
+                    //    client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
+                    //    client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
+                    //    client.DownloadFileAsync(new Uri(finalDownloadUrl), fileName);
+                    //}
+                }
+                //UnZipFileUsing7Zip(firstFilePartDownloaded, tempPath, "balram");
             }
-            UnZipFileUsing7Zip(firstFilePartDownloaded, tempPath, "balram");
+            catch (Exception exception)
+            {
+                LogHelper.logger.Error(exception);
+            }
         }
 
+        private void DownloadFTPFileAsync(string finalDownloadUrl, string fileName, string filePartName, string actualFileName)
+        {
+            Task.Factory.StartNew(() => StartDownloadFileParts(finalDownloadUrl, fileName, filePartName, actualFileName));
+            //result.Wait();
+            //var result = MyTask();
+            //result.Wait();
+            Console.WriteLine("done!");
+        }
+
+        async Task StartDownloadFileParts(string finalDownloadUrl, string fileName, string filePartName, string actualFileName)
+        {
+            try
+            {
+                var wc = new WebClient();
+                wc.Credentials = new NetworkCredential("balram", "balram");
+                wc.DownloadFileCompleted += delegate(object sender, AsyncCompletedEventArgs args)
+                {
+                    if (args.Cancelled)
+                        MessageBox.Show("Download Cancelled.");
+                    else if (args.Error != null)
+                    {
+                        MessageBox.Show("Error while downloading file. " + args.Error.Message);
+                        return;
+                    }
+                    else
+                    {
+                        var currentFile = _fileDownloadStatuses.FirstOrDefault(v => v.FileName == actualFileName);
+                        if (currentFile != null)
+                        {
+                            currentFile.DownloadedParts++;
+                            if (currentFile.IsCompleted)
+                            {
+                                MessageBox.Show("completed");
+                                UnZipFileUsing7Zip(currentFile.FirstFilePart, downloadFolderPath, "balram");
+                                _fileDownloadStatuses.Remove(currentFile);
+
+                                var currentFileProgressBar =
+                                    viewModel.FileDownloads.FirstOrDefault(x => x.FileName == filePartName);
+                                if (currentFileProgressBar != null)
+                                {
+                                    viewModel.FileDownloads.Remove(currentFileProgressBar);
+                                }
+                            }
+                        }
+                    }
+                };
+                wc.DownloadProgressChanged += (sender, args) =>
+                {
+                    var currentProgressBar = viewModel.FileDownloads.FirstOrDefault(x => x.FileName == filePartName);
+                    if (currentProgressBar != null)
+                    {
+                        currentProgressBar.Progress = args.ProgressPercentage;
+                        currentProgressBar.StatusText = string.Format("{0} % complete", args.ProgressPercentage);
+                    }
+                    //Console.WriteLine("{0} - {1} % complete", ProgressChanged(args.BytesReceived), args.ProgressPercentage);
+                    Console.WriteLine("{0} % complete", args.ProgressPercentage);
+                    //var progressDispatcher = progressBar1.Dispatcher;
+                    //Action action = () =>
+                    //{
+                    //    progressBar1.Value = args.ProgressPercentage;
+                    //};
+                    //if (progressDispatcher.CheckAccess())
+                    //    action();
+                    //else
+                    //{
+                    //    progressDispatcher.Invoke(action);
+                    //}
+
+                };
+
+                //Task.Delay(150000).ContinueWith(ant =>
+                //{
+                //    wc.CancelAsync();
+                //    Console.WriteLine("ABORTED!");
+                //});
+
+                //await wc.DownloadFileTaskAsync(serverUri, fileName);
+                finalDownloadUrl = ftpServerAddress + finalDownloadUrl;
+
+                wc.DownloadFileTaskAsync(finalDownloadUrl, fileName);
+            }
+            catch (WebException ex)
+            {
+                return;
+            }
+            catch
+            {
+                //TODO: log exception
+            }
+        }
+
+        long ProgressChanged(long bytes)
+        {
+            if (lastBytes == 0)
+            {
+                lastUpdate = DateTime.Now;
+                lastBytes = bytes;
+                return 0;
+            }
+
+            var now = DateTime.Now;
+            var timeSpan = now - lastUpdate;
+            var bytesChange = bytes - lastBytes;
+            var bytesPerSecond = timeSpan.Seconds != 0 ? bytesChange / timeSpan.Seconds : 0;
+
+            lastBytes = bytes;
+            lastUpdate = now;
+
+            return bytesPerSecond;
+        }
         /// <summary>
         /// Handles the Click event of the btnDownloadAll control.
         /// </summary>
@@ -196,7 +345,7 @@ namespace Ultrasonic.DownloadManager
             //string password = "password";
             string password = "uploaded.net";
 
-            UnZipFileUsing7Zip(fileName, outputDir, password);           
+            UnZipFileUsing7Zip(fileName, outputDir, password);
         }
 
         #endregion
@@ -341,9 +490,9 @@ namespace Ultrasonic.DownloadManager
                             else
                             {
                                 downloadUris.Append("#");
-                                downloadUris.Append(fileName);                                
+                                downloadUris.Append(fileName);
                             }
-                         
+
                             linkCounter++;
                         }
                     }
@@ -391,32 +540,32 @@ namespace Ultrasonic.DownloadManager
             return finalDownloadUrl;
         }
 
-        public void DownloadFileFromSFTP(string downloadUrl,string localFileName)
-        {
-            try
-            {
-                string host = "95.89.83.26";
-                string username = "balram";
-                string password = "balram";
-                string remoteFileName = downloadUrl;
+        //public void DownloadFileFromSFTP(string downloadUrl, string localFileName)
+        //{
+        //    try
+        //    {
+        //        string host = "95.89.83.26";
+        //        string username = "balram";
+        //        string password = "balram";
+        //        string remoteFileName = downloadUrl;
 
-                using (var sftp = new SftpClient(host, 64888, username, password))
-                {
-                    sftp.Connect();
+        //        using (var sftp = new SftpClient(host, 64888, username, password))
+        //        {
+        //            sftp.Connect();
 
-                    using (var file = File.OpenWrite(localFileName))
-                    {
-                        sftp.DownloadFile(remoteFileName, file);
-                    }
+        //            using (var file = File.OpenWrite(localFileName))
+        //            {
+        //                sftp.DownloadFile(remoteFileName, file);
+        //            }
 
-                    sftp.Disconnect();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
+        //            sftp.Disconnect();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message);
+        //    }
+        //}
 
         /// <summary>
         /// Handles the DownloadProgressChanged event of the client control.
@@ -445,7 +594,7 @@ namespace Ultrasonic.DownloadManager
                 //MessageBox.Show("Download finished.");
                 //MessageBox.Show("Starting unzip");
                 //UnZipFileUsing7Zip(allDownloadedFileParts[0], Helper.OUTPUT_ZIP_FOLDER, Helper.DEFAULT_PASSWORD);               
-            }           
+            }
         }
 
         /// <summary>
