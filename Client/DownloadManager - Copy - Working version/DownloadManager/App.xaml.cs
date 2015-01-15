@@ -24,6 +24,7 @@ namespace Ultrasonic.DownloadManager
         protected override void OnStartup(StartupEventArgs e)
         {
             //new ObjectProducerTest().Test();
+            LogHelper.SetLoggingState(true);
 
             base.OnStartup(e);
 

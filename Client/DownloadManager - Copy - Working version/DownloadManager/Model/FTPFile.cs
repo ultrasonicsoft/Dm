@@ -14,6 +14,14 @@ namespace Ultrasonic.DownloadManager.Model
         private long totalSize;
         private long downloadSize;
         private double progress;
+        private bool isCompleted;
+
+        public bool IsCompleted
+        {
+            get { return isCompleted; }
+            set { this.RaiseAndSetIfChanged(v => v.IsCompleted, ref isCompleted, value); }
+        }
+
 
         public double Progress
         {

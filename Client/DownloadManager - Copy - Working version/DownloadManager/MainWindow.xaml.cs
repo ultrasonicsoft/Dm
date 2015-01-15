@@ -9,9 +9,11 @@ using System.IO.Packaging;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Threading;
 using System.Xml;
 using System.Xml.Linq;
 using Ultrasonic.DownloadManager.DownloadManagerService;
@@ -30,7 +32,6 @@ namespace Ultrasonic.DownloadManager
         #region Private Members
 
         private Dictionary<string, string> FileUriMapping;
-        private string downloadedFileName = string.Empty;
         private List<string> allDownloadedFileParts = new List<string>();
         private int totalDownloadParts = 0;
         private static int totalPartsDownloaded = 0;
@@ -45,7 +46,10 @@ namespace Ultrasonic.DownloadManager
         private bool isDownloading = false;
         private List<FileDownloadStatus> _fileDownloadStatuses = new List<FileDownloadStatus>();
         string downloadFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Downloaded\\";
-
+        private string ftpUserName = "balram";
+        private string ftpUserPassword = "balram";
+        private int numberOfRunningThreads;
+        private int maxAllowedRunningThreads = 2;
         public User LoggedInUser
         {
             get { return _loggedInUser; }
@@ -83,31 +87,17 @@ namespace Ultrasonic.DownloadManager
         /// </summary>
         public MainWindow()
         {
+            LogHelper.logger.Info("In MainWindow constructor.");
             viewModel = new MainWindowViewModel();
             this.DataContext = viewModel;
             InitializeComponent();
-
-            //Properties.Settings.Default.AccountID = "default";
-            //Properties.Settings.Default.Password = "default";
-            //Properties.Settings.Default.Save();
-            //if (Properties.Settings.Default.AccountID == "default" && Properties.Settings.Default.Password == "default")
-            //{
-            //    Register register = new Register();
-            //    register.ShowDialog();
-
-            //    if (register.RegistrationSuccessful==true)
-            //    {
-            //        Properties.Settings.Default.AccountID = register.AccountId;
-            //        Properties.Settings.Default.Password = register.Password;
-            //        Properties.Settings.Default.Save();
-            //    }
-            //}
 
             //Fill Categories combo box
             ViewItemsSource = new ObservableCollection<MyComboViewModel>(ComboViewShowcaseHelper.GetSource(0));
 
             //Fill Information combo box
             ViewItemsSourceInformation = new ObservableCollection<MyComboViewModel>(ComboViewShowcaseHelper.GetSource(1));
+            LogHelper.logger.Info("MainWindow object constructed.");
         }
 
         #endregion
@@ -142,39 +132,42 @@ namespace Ultrasonic.DownloadManager
         /// <param name="e">The <see cref="System.Windows.RoutedEventArgs"/> instance containing the event data.</param>
         private void OnHyperLinkClick(object sender, RoutedEventArgs e)
         {
+            Task.Run(() => EnqueueDownload(e));
+        }
+
+        private void EnqueueDownload(RoutedEventArgs e)
+        {
             try
             {
-
-
-                List<string> downloadUriParts = ((Hyperlink)e.OriginalSource).NavigateUri.OriginalString.Split(Helper.DOWNLOAD_URI_SEPARATOR_CHAR).ToList<string>();
+                List<string> downloadUriParts = null;
+                Application.Current.Dispatcher.Invoke(() => downloadUriParts = ((Hyperlink)e.OriginalSource).NavigateUri.OriginalString.Split(Helper.DOWNLOAD_URI_SEPARATOR_CHAR)
+                        .ToList<string>());
 
                 string fileName = string.Empty;
                 string finalDownloadUrl = string.Empty;
 
                 string actualFileName = downloadUriParts[downloadUriParts.Count - 1].Split('#')[1];
                 int counter = 1;
+                LogHelper.logger.Info(string.Format("Downloading file: {0}. Total parts of files are {1}.", actualFileName,
+                    downloadUriParts.Count));
 
-                //_fileDownloadStatuses = new List<FileDownloadStatus>{new FileDownloadStatus{TotalParts = downloadUriParts.Count, FileName = actualFileName} };
                 _fileDownloadStatuses.Add(new FileDownloadStatus
                 {
                     TotalParts = downloadUriParts.Count,
                     FileName = actualFileName,
                     FirstFilePart = string.Concat(downloadFolderPath, "\\", actualFileName, ".7z.001")
                 });
+
+                LogHelper.logger.Info("Added File to be downloaded in FileDownload queue.");
+
                 totalDownloadParts = downloadUriParts.Count;
                 totalPartsDownloaded = 0;
-                string firstFilePartDownloaded = string.Empty;
+
+                numberOfRunningThreads = 0;
+
                 foreach (string downloadUri in downloadUriParts)
                 {
-                    if (downloadUri.Contains("#"))
-                    {
-                        finalDownloadUrl = downloadUri.Split('#')[0];
-                    }
-                    else
-                    {
-                        finalDownloadUrl = downloadUri;
-                    }
-
+                    finalDownloadUrl = downloadUri.Contains("#") ? downloadUri.Split('#')[0] : downloadUri;
 
                     //fileName = tempPath + "\\" + downloadUri.Split('/')[downloadUri.Split('/').Length - 1];
                     if (downloadUriParts.Count < 10)
@@ -190,30 +183,29 @@ namespace Ultrasonic.DownloadManager
                         fileName = downloadFolderPath + "\\" + actualFileName + ".7z." + counter.ToString();
                     }
                     if (counter == 1)
-                        firstFilePartDownloaded = fileName;
+                        ;
                     counter++;
-                    //if (counter > 2)
-                    //    break;
+
                     var parts = finalDownloadUrl.Split('/');
                     string filePartName = string.Empty;
                     if (parts.Length > 0)
                     {
                         filePartName = parts[parts.Length - 1];
                     }
-                    viewModel.FileDownloads.Add(new FTPFile() { FileName = filePartName });
-                    //DownloadFileFromSFTP(finalDownloadUrl, fileName);
+
+                    LogHelper.logger.Info(string.Format("Adding file part {0} to download async in queue.", filePartName));
+
+                    Application.Current.Dispatcher.Invoke(() => viewModel.FileDownloads.Add(new FTPFile() { FileName = filePartName }));
+                    
+                    // Start downloading file part Async
                     DownloadFTPFileAsync(finalDownloadUrl, fileName, filePartName, actualFileName);
-
-                    //using (WebClient client = new WebClient())
-                    //{
-                    //    allDownloadedFileParts.Add(fileName);
-
-                    //    client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
-                    //    client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
-                    //    client.DownloadFileAsync(new Uri(finalDownloadUrl), fileName);
-                    //}
+                    numberOfRunningThreads++;
+                    
+                    while (numberOfRunningThreads >= maxAllowedRunningThreads)
+                    {
+                        ; // Spin CPU until its downloading
+                    }
                 }
-                //UnZipFileUsing7Zip(firstFilePartDownloaded, tempPath, "balram");
             }
             catch (Exception exception)
             {
@@ -223,19 +215,26 @@ namespace Ultrasonic.DownloadManager
 
         private void DownloadFTPFileAsync(string finalDownloadUrl, string fileName, string filePartName, string actualFileName)
         {
-            Task.Factory.StartNew(() => StartDownloadFileParts(finalDownloadUrl, fileName, filePartName, actualFileName));
-            //result.Wait();
-            //var result = MyTask();
-            //result.Wait();
-            Console.WriteLine("done!");
+            try
+            {
+                //Task.Factory.StartNew(() => StartDownloadFileParts(finalDownloadUrl, fileName, filePartName, actualFileName));
+                StartDownloadFileParts(finalDownloadUrl, fileName, filePartName, actualFileName);
+                Console.WriteLine("done!");
+            }
+            catch (Exception exception)
+            {
+                LogHelper.logger.Error(exception);
+            }
         }
 
-        async Task StartDownloadFileParts(string finalDownloadUrl, string fileName, string filePartName, string actualFileName)
+        void StartDownloadFileParts(string finalDownloadUrl, string fileName, string filePartName, string actualFileName)
         {
             try
             {
                 var wc = new WebClient();
-                wc.Credentials = new NetworkCredential("balram", "balram");
+                wc.Credentials = new NetworkCredential(ftpUserName, ftpUserPassword);
+                LogHelper.logger.Info(string.Format("Connecting to server with credentials: {0}/{1}", ftpUserName, ftpUserPassword));
+
                 wc.DownloadFileCompleted += delegate(object sender, AsyncCompletedEventArgs args)
                 {
                     if (args.Cancelled)
@@ -258,20 +257,24 @@ namespace Ultrasonic.DownloadManager
                                 _fileDownloadStatuses.Remove(currentFile);
 
                                 var currentFileProgressBar =
-                                    viewModel.FileDownloads.FirstOrDefault(x => x.FileName == filePartName);
+                                    viewModel.FileDownloads.FirstOrDefault(x => x.FileName == filePartName && x.IsCompleted==false);
                                 if (currentFileProgressBar != null)
                                 {
-                                    viewModel.FileDownloads.Remove(currentFileProgressBar);
+                                    currentFileProgressBar.IsCompleted = true;
+                                    //viewModel.FileDownloads.Remove(currentFileProgressBar);
                                 }
                             }
+                            numberOfRunningThreads--;
                         }
                     }
                 };
+
                 wc.DownloadProgressChanged += (sender, args) =>
                 {
                     var currentProgressBar = viewModel.FileDownloads.FirstOrDefault(x => x.FileName == filePartName);
                     if (currentProgressBar != null)
                     {
+                        Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new ThreadStart(delegate { }));
                         currentProgressBar.Progress = args.ProgressPercentage;
                         currentProgressBar.StatusText = string.Format("{0} % complete", args.ProgressPercentage);
                     }
@@ -298,17 +301,19 @@ namespace Ultrasonic.DownloadManager
                 //});
 
                 //await wc.DownloadFileTaskAsync(serverUri, fileName);
+
                 finalDownloadUrl = ftpServerAddress + finalDownloadUrl;
 
-                wc.DownloadFileTaskAsync(finalDownloadUrl, fileName);
+                LogHelper.logger.Info(string.Format("Starting download => Weburl: {0}, Local FileName: {1}", finalDownloadUrl, fileName));
+                wc.DownloadFileAsync(new Uri(finalDownloadUrl), fileName);
             }
-            catch (WebException ex)
+            catch (WebException exception)
             {
-                return;
+                LogHelper.logger.Error(exception);
             }
-            catch
+            catch (Exception exception)
             {
-                //TODO: log exception
+                LogHelper.logger.Error(exception);
             }
         }
 
