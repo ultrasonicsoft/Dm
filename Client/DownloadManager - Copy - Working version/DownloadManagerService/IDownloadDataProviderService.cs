@@ -29,6 +29,18 @@ namespace DownloadManagerService
 
         [OperationContract]
         bool RegisterNewUser(string _userName, string _password, string _email);
+
+        [OperationContract]
+        string GetLatestVersion();
+
+        [OperationContract]
+        string GetDownloadUrl();
+
+        [OperationContract]
+        string GetFtpUserName();
+
+        [OperationContract]
+        string GetFtpPassword();
     }
   
 }

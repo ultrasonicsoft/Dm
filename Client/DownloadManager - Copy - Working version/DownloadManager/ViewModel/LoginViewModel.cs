@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -16,7 +19,7 @@ namespace Ultrasonic.DownloadManager.ViewModel
         private ServiceRepository _serviceRepository;
         private User _loginUser;
         private Login _loginView;
-
+        
         public Login LoginView
         {
             get { return _loginView; }
@@ -34,6 +37,8 @@ namespace Ultrasonic.DownloadManager.ViewModel
             _loginUser = new User{UserName = "admin", Password = "admin"};
             LoginCommand = new DelegateCommand(ExecuteLoginCommand, CanLoginCommandExecute);
             _serviceRepository = new ServiceRepository();
+
+            CheckUpdateAvailable();
         }
 
         private bool CanLoginCommandExecute()
@@ -43,18 +48,81 @@ namespace Ultrasonic.DownloadManager.ViewModel
 
         private void ExecuteLoginCommand()
         {
-            Mouse.OverrideCursor = Cursors.Wait;
-            if (_serviceRepository.IsValidLogin(LoginUser.UserName, LoginUser.Password))
+            try
             {
-                MainWindow mainWindow = new MainWindow(){LoggedInUser = LoginUser};
-                mainWindow.Show();
-                LoginView.Close();
+                Mouse.OverrideCursor = Cursors.Wait;
+                if (_serviceRepository.IsValidLogin(LoginUser.UserName, LoginUser.Password))
+                {
+                    MainWindow mainWindow = new MainWindow() { LoggedInUser = LoginUser };
+                    mainWindow.Show();
+                    LoginView.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Login failed");
+                }
             }
-            else
+            catch (Exception exception)
             {
-                MessageBox.Show("Login failed");
+                LogHelper.logger.Error(exception);
             }
             Mouse.OverrideCursor = null;
+        }
+
+        private void CheckUpdateAvailable()
+        {
+            try
+            {
+                string latestVersion = _serviceRepository.GetLatestVersion();
+                if (latestVersion.Equals(Assembly.GetEntryAssembly().GetName().Version.ToString()) == false)
+                {
+                    var userResponse =
+                        MessageBox.Show("You are using old version. You must update your application now. Agree?",
+                            "Download Manager", MessageBoxButton.YesNo);
+                    if (userResponse == MessageBoxResult.Yes)
+                    {
+                        UpdateApplication();
+                    }
+                    else
+                    {
+                        Application.Current.Shutdown(0);
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                LogHelper.logger.Equals(exception);
+            }
+        }
+
+        private void UpdateApplication()
+        {
+            try
+            {
+                string updateManagerPath = ConfigurationManager.AppSettings["UpdateManagerPath"];
+                string downloadManagerPath = ConfigurationManager.AppSettings["DownloadManagerPath"];
+                string downloadUrl = _serviceRepository.GetDownloadUrl();
+                string applicationName = Assembly.GetEntryAssembly().GetName().Name + ".exe";
+                string ftpUserName = _serviceRepository.GetFtpUserName();
+                string ftpUserPassword = _serviceRepository.GetFtpUserName();
+
+                string arguments = string.Format("\"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\"", downloadManagerPath, 
+                    downloadUrl, applicationName,ftpUserName,ftpUserPassword);
+
+                // Launch update application with arguments
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = updateManagerPath;
+                startInfo.Arguments = arguments;
+                Process.Start(startInfo);
+
+                // Exit application
+                Application.Current.Shutdown(0);
+
+            }
+            catch (Exception exception)
+            {
+                LogHelper.logger.Error(exception);
+            }
         }
     }
 }

@@ -37,5 +37,25 @@ namespace Ultrasonic.DownloadManager.Repository
         {
             return DataProviderService.RegisterNewUser(_userName, _password, _email);
         }
+
+        public string GetLatestVersion()
+        {
+            return DataProviderService.GetLatestVersion();
+        }
+
+        public string GetDownloadUrl()
+        {
+            return DataProviderService.GetDownloadUrl();
+        }
+
+        public string GetFtpUserName()
+        {
+            return DataProviderService.GetFtpUserName();
+        }
+
+        public string GetFtpPassword()
+        {
+            return DataProviderService.GetFtpPassword();
+        }
     }
 }

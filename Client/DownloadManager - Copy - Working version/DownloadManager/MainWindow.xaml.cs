@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Packaging;
@@ -87,6 +88,7 @@ namespace Ultrasonic.DownloadManager
         /// </summary>
         public MainWindow()
         {
+
             LogHelper.logger.Info("In MainWindow constructor.");
             viewModel = new MainWindowViewModel();
             this.DataContext = viewModel;
@@ -622,7 +624,7 @@ namespace Ultrasonic.DownloadManager
             try
             {
                 ProcessStartInfo process = new ProcessStartInfo();
-                process.FileName = Helper._7ZIP_FILE_PATH;
+                process.FileName = ConfigurationManager.AppSettings["7Zip"]; ;
                 process.Arguments = string.Format(" x  {0} -p{1} -o{2}", fileName, password, outputDir);
                 process.WindowStyle = ProcessWindowStyle.Hidden;
                 Process p = Process.Start(process);

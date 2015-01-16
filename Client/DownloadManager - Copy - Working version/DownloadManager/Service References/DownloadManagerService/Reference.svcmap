@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="69ea389f-9bed-42f3-9368-277b2e5d38e0" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="71818f18-32f7-40d2-bc7e-7970a6680f45" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
     <EnableDataBinding>true</EnableDataBinding>
     <ExcludedTypes />
     <ImportXmlTypes>false</ImportXmlTypes>
@@ -21,9 +22,9 @@
     <MetadataSource Address="http://91.229.79.95:808/DownloadDataProviderService.svc/mex" Protocol="mex" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="991c99a0-b3b1-4209-8611-3a0c0320c9b3" SourceId="1" SourceUrl="http://91.229.79.95:808/DownloadDataProviderService.svc/mex" />
-    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="94fb857d-513c-4608-8849-8afe9ce60dfd" SourceId="1" SourceUrl="http://91.229.79.95:808/DownloadDataProviderService.svc/mex" />
-    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="9571c078-b706-468b-a852-8c6e6fafae6a" SourceId="1" SourceUrl="http://91.229.79.95:808/DownloadDataProviderService.svc/mex" />
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="6074d3a3-99b2-4da1-a7a3-541f4bc43871" SourceId="1" SourceUrl="http://91.229.79.95:808/DownloadDataProviderService.svc/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="bdc0ba23-8175-4b54-a0af-f2990cba7920" SourceId="1" SourceUrl="http://91.229.79.95:808/DownloadDataProviderService.svc/mex" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="4d051a42-3b75-4f66-be11-6d51828b8fea" SourceId="1" SourceUrl="http://91.229.79.95:808/DownloadDataProviderService.svc/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

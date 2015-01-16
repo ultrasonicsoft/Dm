@@ -54,5 +54,39 @@ namespace DownloadManagerService
         {
             return _dbRepository.RegisterNewUser(_userName, _password, _email);
         }
+
+
+        public string GetLatestVersion()
+        {
+            string fileName = Path.Combine(HostingEnvironment.ApplicationPhysicalPath, "App_Data", "LatestVersion.txt");
+            if (File.Exists(fileName))
+                return File.ReadAllText(fileName);
+            return string.Empty;
+        }
+
+        public string GetDownloadUrl()
+        {
+            string fileName = Path.Combine(HostingEnvironment.ApplicationPhysicalPath, "App_Data", "DownloadUrl.txt");
+            if (File.Exists(fileName))
+                return File.ReadAllText(fileName);
+            return string.Empty;
+        }
+
+
+        public string GetFtpUserName()
+        {
+            string fileName = Path.Combine(HostingEnvironment.ApplicationPhysicalPath, "App_Data", "FtpUserName.txt");
+            if (File.Exists(fileName))
+                return File.ReadAllText(fileName);
+            return string.Empty;
+        }
+
+        public string GetFtpPassword()
+        {
+            string fileName = Path.Combine(HostingEnvironment.ApplicationPhysicalPath, "App_Data", "FtpPassword.txt");
+            if (File.Exists(fileName))
+                return File.ReadAllText(fileName);
+            return string.Empty;
+        }
     }
 }

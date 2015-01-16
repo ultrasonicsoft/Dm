@@ -9,8 +9,8 @@
   </wsp:Policy>
   <wsdl:types>
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
-      <xsd:import namespace="http://tempuri.org/" />
-      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IDownloadDataProviderService_GetCategories_InputMessage">
@@ -49,6 +49,30 @@
   <wsdl:message name="IDownloadDataProviderService_RegisterNewUser_OutputMessage">
     <wsdl:part name="parameters" element="tns:RegisterNewUserResponse" />
   </wsdl:message>
+  <wsdl:message name="IDownloadDataProviderService_GetLatestVersion_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetLatestVersion" />
+  </wsdl:message>
+  <wsdl:message name="IDownloadDataProviderService_GetLatestVersion_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetLatestVersionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDownloadDataProviderService_GetDownloadUrl_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDownloadUrl" />
+  </wsdl:message>
+  <wsdl:message name="IDownloadDataProviderService_GetDownloadUrl_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDownloadUrlResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDownloadDataProviderService_GetFtpUserName_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetFtpUserName" />
+  </wsdl:message>
+  <wsdl:message name="IDownloadDataProviderService_GetFtpUserName_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetFtpUserNameResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDownloadDataProviderService_GetFtpPassword_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetFtpPassword" />
+  </wsdl:message>
+  <wsdl:message name="IDownloadDataProviderService_GetFtpPassword_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetFtpPasswordResponse" />
+  </wsdl:message>
   <wsdl:portType name="IDownloadDataProviderService">
     <wsdl:operation name="GetCategories">
       <wsdl:input wsaw:Action="http://tempuri.org/IDownloadDataProviderService/GetCategories" message="tns:IDownloadDataProviderService_GetCategories_InputMessage" />
@@ -73,6 +97,22 @@
     <wsdl:operation name="RegisterNewUser">
       <wsdl:input wsaw:Action="http://tempuri.org/IDownloadDataProviderService/RegisterNewUser" message="tns:IDownloadDataProviderService_RegisterNewUser_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDownloadDataProviderService/RegisterNewUserResponse" message="tns:IDownloadDataProviderService_RegisterNewUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLatestVersion">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDownloadDataProviderService/GetLatestVersion" message="tns:IDownloadDataProviderService_GetLatestVersion_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDownloadDataProviderService/GetLatestVersionResponse" message="tns:IDownloadDataProviderService_GetLatestVersion_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDownloadUrl">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDownloadDataProviderService/GetDownloadUrl" message="tns:IDownloadDataProviderService_GetDownloadUrl_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDownloadDataProviderService/GetDownloadUrlResponse" message="tns:IDownloadDataProviderService_GetDownloadUrl_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFtpUserName">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDownloadDataProviderService/GetFtpUserName" message="tns:IDownloadDataProviderService_GetFtpUserName_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDownloadDataProviderService/GetFtpUserNameResponse" message="tns:IDownloadDataProviderService_GetFtpUserName_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFtpPassword">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDownloadDataProviderService/GetFtpPassword" message="tns:IDownloadDataProviderService_GetFtpPassword_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDownloadDataProviderService/GetFtpPasswordResponse" message="tns:IDownloadDataProviderService_GetFtpPassword_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="WSHttpBinding_IDownloadDataProviderService" type="tns:IDownloadDataProviderService">
@@ -125,6 +165,42 @@
     </wsdl:operation>
     <wsdl:operation name="RegisterNewUser">
       <soap12:operation soapAction="http://tempuri.org/IDownloadDataProviderService/RegisterNewUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLatestVersion">
+      <soap12:operation soapAction="http://tempuri.org/IDownloadDataProviderService/GetLatestVersion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDownloadUrl">
+      <soap12:operation soapAction="http://tempuri.org/IDownloadDataProviderService/GetDownloadUrl" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFtpUserName">
+      <soap12:operation soapAction="http://tempuri.org/IDownloadDataProviderService/GetFtpUserName" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFtpPassword">
+      <soap12:operation soapAction="http://tempuri.org/IDownloadDataProviderService/GetFtpPassword" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

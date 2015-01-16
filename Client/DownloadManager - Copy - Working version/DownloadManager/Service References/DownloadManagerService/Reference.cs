@@ -18,20 +18,62 @@ namespace Ultrasonic.DownloadManager.DownloadManagerService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDownloadDataProviderService/GetCategories", ReplyAction="http://tempuri.org/IDownloadDataProviderService/GetCategoriesResponse")]
         string GetCategories();
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDownloadDataProviderService/GetCategories", ReplyAction="http://tempuri.org/IDownloadDataProviderService/GetCategoriesResponse")]
+        System.Threading.Tasks.Task<string> GetCategoriesAsync();
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDownloadDataProviderService/GetInformation", ReplyAction="http://tempuri.org/IDownloadDataProviderService/GetInformationResponse")]
         string GetInformation();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDownloadDataProviderService/GetInformation", ReplyAction="http://tempuri.org/IDownloadDataProviderService/GetInformationResponse")]
+        System.Threading.Tasks.Task<string> GetInformationAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDownloadDataProviderService/GetDownloadInformation", ReplyAction="http://tempuri.org/IDownloadDataProviderService/GetDownloadInformationResponse")]
         string GetDownloadInformation();
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDownloadDataProviderService/GetDownloadInformation", ReplyAction="http://tempuri.org/IDownloadDataProviderService/GetDownloadInformationResponse")]
+        System.Threading.Tasks.Task<string> GetDownloadInformationAsync();
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDownloadDataProviderService/GetFileList", ReplyAction="http://tempuri.org/IDownloadDataProviderService/GetFileListResponse")]
         string GetFileList();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDownloadDataProviderService/GetFileList", ReplyAction="http://tempuri.org/IDownloadDataProviderService/GetFileListResponse")]
+        System.Threading.Tasks.Task<string> GetFileListAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDownloadDataProviderService/IsValidLogin", ReplyAction="http://tempuri.org/IDownloadDataProviderService/IsValidLoginResponse")]
         bool IsValidLogin(string _userName, string _password);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDownloadDataProviderService/IsValidLogin", ReplyAction="http://tempuri.org/IDownloadDataProviderService/IsValidLoginResponse")]
+        System.Threading.Tasks.Task<bool> IsValidLoginAsync(string _userName, string _password);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDownloadDataProviderService/RegisterNewUser", ReplyAction="http://tempuri.org/IDownloadDataProviderService/RegisterNewUserResponse")]
         bool RegisterNewUser(string _userName, string _password, string _email);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDownloadDataProviderService/RegisterNewUser", ReplyAction="http://tempuri.org/IDownloadDataProviderService/RegisterNewUserResponse")]
+        System.Threading.Tasks.Task<bool> RegisterNewUserAsync(string _userName, string _password, string _email);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDownloadDataProviderService/GetLatestVersion", ReplyAction="http://tempuri.org/IDownloadDataProviderService/GetLatestVersionResponse")]
+        string GetLatestVersion();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDownloadDataProviderService/GetLatestVersion", ReplyAction="http://tempuri.org/IDownloadDataProviderService/GetLatestVersionResponse")]
+        System.Threading.Tasks.Task<string> GetLatestVersionAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDownloadDataProviderService/GetDownloadUrl", ReplyAction="http://tempuri.org/IDownloadDataProviderService/GetDownloadUrlResponse")]
+        string GetDownloadUrl();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDownloadDataProviderService/GetDownloadUrl", ReplyAction="http://tempuri.org/IDownloadDataProviderService/GetDownloadUrlResponse")]
+        System.Threading.Tasks.Task<string> GetDownloadUrlAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDownloadDataProviderService/GetFtpUserName", ReplyAction="http://tempuri.org/IDownloadDataProviderService/GetFtpUserNameResponse")]
+        string GetFtpUserName();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDownloadDataProviderService/GetFtpUserName", ReplyAction="http://tempuri.org/IDownloadDataProviderService/GetFtpUserNameResponse")]
+        System.Threading.Tasks.Task<string> GetFtpUserNameAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDownloadDataProviderService/GetFtpPassword", ReplyAction="http://tempuri.org/IDownloadDataProviderService/GetFtpPasswordResponse")]
+        string GetFtpPassword();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDownloadDataProviderService/GetFtpPassword", ReplyAction="http://tempuri.org/IDownloadDataProviderService/GetFtpPasswordResponse")]
+        System.Threading.Tasks.Task<string> GetFtpPasswordAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -65,24 +107,80 @@ namespace Ultrasonic.DownloadManager.DownloadManagerService {
             return base.Channel.GetCategories();
         }
         
+        public System.Threading.Tasks.Task<string> GetCategoriesAsync() {
+            return base.Channel.GetCategoriesAsync();
+        }
+        
         public string GetInformation() {
             return base.Channel.GetInformation();
+        }
+        
+        public System.Threading.Tasks.Task<string> GetInformationAsync() {
+            return base.Channel.GetInformationAsync();
         }
         
         public string GetDownloadInformation() {
             return base.Channel.GetDownloadInformation();
         }
         
+        public System.Threading.Tasks.Task<string> GetDownloadInformationAsync() {
+            return base.Channel.GetDownloadInformationAsync();
+        }
+        
         public string GetFileList() {
             return base.Channel.GetFileList();
+        }
+        
+        public System.Threading.Tasks.Task<string> GetFileListAsync() {
+            return base.Channel.GetFileListAsync();
         }
         
         public bool IsValidLogin(string _userName, string _password) {
             return base.Channel.IsValidLogin(_userName, _password);
         }
         
+        public System.Threading.Tasks.Task<bool> IsValidLoginAsync(string _userName, string _password) {
+            return base.Channel.IsValidLoginAsync(_userName, _password);
+        }
+        
         public bool RegisterNewUser(string _userName, string _password, string _email) {
             return base.Channel.RegisterNewUser(_userName, _password, _email);
+        }
+        
+        public System.Threading.Tasks.Task<bool> RegisterNewUserAsync(string _userName, string _password, string _email) {
+            return base.Channel.RegisterNewUserAsync(_userName, _password, _email);
+        }
+        
+        public string GetLatestVersion() {
+            return base.Channel.GetLatestVersion();
+        }
+        
+        public System.Threading.Tasks.Task<string> GetLatestVersionAsync() {
+            return base.Channel.GetLatestVersionAsync();
+        }
+        
+        public string GetDownloadUrl() {
+            return base.Channel.GetDownloadUrl();
+        }
+        
+        public System.Threading.Tasks.Task<string> GetDownloadUrlAsync() {
+            return base.Channel.GetDownloadUrlAsync();
+        }
+        
+        public string GetFtpUserName() {
+            return base.Channel.GetFtpUserName();
+        }
+        
+        public System.Threading.Tasks.Task<string> GetFtpUserNameAsync() {
+            return base.Channel.GetFtpUserNameAsync();
+        }
+        
+        public string GetFtpPassword() {
+            return base.Channel.GetFtpPassword();
+        }
+        
+        public System.Threading.Tasks.Task<string> GetFtpPasswordAsync() {
+            return base.Channel.GetFtpPasswordAsync();
         }
     }
 }

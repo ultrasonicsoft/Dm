@@ -1,0 +1,9 @@
+﻿<Window x:Class="AutoUpdateManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="100" Width="525" WindowStyle="None" Loaded="Window_Loaded">
+    <StackPanel VerticalAlignment="Center">
+        <ProgressBar x:Name="_downloadProgress" Height="30" VerticalAlignment="Center"/>
+        <TextBlock x:Name="txtProgressStatus" VerticalAlignment="Center"/>
+    </StackPanel>
+</Window>
