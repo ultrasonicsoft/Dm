@@ -20,7 +20,7 @@ namespace AutoUpdateManager
         protected override void OnStartup(StartupEventArgs e)
         {
             //e.Args is the string[] of command line argruments
-
+            base.OnStartup(e);
             MainWindow window = new MainWindow();
             window.Args = e.Args;
             window.ShowDialog();

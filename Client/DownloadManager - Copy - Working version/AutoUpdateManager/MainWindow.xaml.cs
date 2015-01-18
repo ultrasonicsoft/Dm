@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -70,7 +71,7 @@ namespace AutoUpdateManager
                     }
                     else
                     {
-                        txtProgressStatus.Text = "Download completed.";
+                        LblDownload.Content = "Applying new update...";
                         UnZipFileUsing7Zip(fileName, downloadManagerPath);
                         LaunchApplication(downloadManagerPath);
                     }
@@ -96,6 +97,11 @@ namespace AutoUpdateManager
             try
             {
                 outputDir = System.IO.Path.GetDirectoryName(outputDir);
+                DirectoryInfo dir = new DirectoryInfo(outputDir);
+                foreach (var file in dir.EnumerateFiles())
+                {
+                    File.Delete(file.FullName);
+                }
                 ProcessStartInfo process = new ProcessStartInfo();
                 process.FileName = ConfigurationManager.AppSettings["7Zip"];
                 process.Arguments = string.Format(" x  \"{0}\" -o\"{1}\"", fileName,  outputDir);

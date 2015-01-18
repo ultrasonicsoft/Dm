@@ -38,7 +38,6 @@ namespace Ultrasonic.DownloadManager.ViewModel
             LoginCommand = new DelegateCommand(ExecuteLoginCommand, CanLoginCommandExecute);
             _serviceRepository = new ServiceRepository();
 
-            CheckUpdateAvailable();
         }
 
         private bool CanLoginCommandExecute()
@@ -53,6 +52,7 @@ namespace Ultrasonic.DownloadManager.ViewModel
                 Mouse.OverrideCursor = Cursors.Wait;
                 if (_serviceRepository.IsValidLogin(LoginUser.UserName, LoginUser.Password))
                 {
+                    CheckUpdateAvailable();
                     MainWindow mainWindow = new MainWindow() { LoggedInUser = LoginUser };
                     mainWindow.Show();
                     LoginView.Close();

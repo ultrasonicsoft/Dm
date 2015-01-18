@@ -9,6 +9,7 @@ using System.IO;
 using System.IO.Packaging;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -94,6 +95,7 @@ namespace Ultrasonic.DownloadManager
             this.DataContext = viewModel;
             InitializeComponent();
 
+            txtVersionInfo.Text = Assembly.GetEntryAssembly().GetName().Version.ToString();
             //Fill Categories combo box
             ViewItemsSource = new ObservableCollection<MyComboViewModel>(ComboViewShowcaseHelper.GetSource(0));
 
