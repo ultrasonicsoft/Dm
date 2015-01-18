@@ -23,10 +23,10 @@ namespace AutoUpdateManager
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class UpdateManager : Window
     {
         public string[] Args { get; set; }
-        public MainWindow()
+        public UpdateManager()
         {
             InitializeComponent();
 

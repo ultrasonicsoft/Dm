@@ -30,32 +30,81 @@ namespace Ultrasonic.DownloadManager.Repository
 
         public bool IsValidLogin(string _userName, string _password)
         {
-            return DataProviderService.IsValidLogin(_userName, _password);
+            try
+            {
+                return DataProviderService.IsValidLogin(_userName, _password);
+            }
+            catch (Exception exception)
+            {
+                LogHelper.logger.Error(exception);
+            }
+            return false;
         }
 
         public bool RegisterNewUser(string _userName, string _password, string _email)
         {
-            return DataProviderService.RegisterNewUser(_userName, _password, _email);
+            try
+            {
+                return DataProviderService.RegisterNewUser(_userName, _password, _email);
+            }
+            catch (Exception exception)
+            {
+                LogHelper.logger.Error(exception);
+            }
+            return false;
         }
 
         public string GetLatestVersion()
         {
-            return DataProviderService.GetLatestVersion();
+            try
+            {
+                return DataProviderService.GetLatestVersion();
+            }
+            catch (Exception exception)
+            {
+                LogHelper.logger.Error(exception);
+            }
+            return string.Empty;
         }
 
         public string GetDownloadUrl()
         {
-            return DataProviderService.GetDownloadUrl();
+            try
+            {
+                return DataProviderService.GetDownloadUrl();
+            }
+            catch (Exception exception)
+            {
+                LogHelper.logger.Error(exception);
+            }
+            return string.Empty;
         }
 
         public string GetFtpUserName()
         {
-            return DataProviderService.GetFtpUserName();
+            try
+            {
+                return DataProviderService.GetFtpUserName();
+            }
+            catch (Exception exception)
+            {
+                LogHelper.logger.Error(exception);
+            }
+            return string.Empty;
         }
 
         public string GetFtpPassword()
         {
-            return DataProviderService.GetFtpPassword();
+            try
+            {
+                return DataProviderService.GetFtpPassword();
+
+            }
+            catch (Exception exception)
+            {
+                LogHelper.logger.Error(exception);
+            }
+            return string.Empty;
         }
     }
 }

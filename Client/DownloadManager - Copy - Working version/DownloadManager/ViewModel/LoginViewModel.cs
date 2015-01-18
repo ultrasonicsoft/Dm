@@ -53,7 +53,7 @@ namespace Ultrasonic.DownloadManager.ViewModel
                 if (_serviceRepository.IsValidLogin(LoginUser.UserName, LoginUser.Password))
                 {
                     CheckUpdateAvailable();
-                    MainWindow mainWindow = new MainWindow() { LoggedInUser = LoginUser };
+                    DownloadManagerView mainWindow = new DownloadManagerView() { LoggedInUser = LoginUser };
                     mainWindow.Show();
                     LoginView.Close();
                 }

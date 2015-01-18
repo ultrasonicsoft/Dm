@@ -1,4 +1,4 @@
-﻿<Window x:Class="Ultrasonic.DownloadManager.MainWindow"
+﻿<Window x:Class="Ultrasonic.DownloadManager.DownloadManagerView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="http://schemas.Ultrasonicsoft.com/wpf/xaml/presentation"        

@@ -21,7 +21,7 @@ namespace AutoUpdateManager
         {
             //e.Args is the string[] of command line argruments
             base.OnStartup(e);
-            MainWindow window = new MainWindow();
+            var window = new UpdateManager();
             window.Args = e.Args;
             window.ShowDialog();
         }

@@ -43,7 +43,7 @@ namespace Ultrasonic.DownloadManager.ViewModel
             Mouse.OverrideCursor = Cursors.Wait;
             if (_serviceRepository.RegisterNewUser(NewUser.UserName, NewUser.Password, NewUser.Email))
             {
-                var mainWindow = new MainWindow() {LoggedInUser = NewUser};
+                var mainWindow = new DownloadManagerView() { LoggedInUser = NewUser };
                 mainWindow.Show();
                 NewUserView.Close();
             }

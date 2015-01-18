@@ -29,7 +29,7 @@ namespace Ultrasonic.DownloadManager
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class DownloadManagerView : Window
     {
         #region Private Members
 
@@ -62,8 +62,8 @@ namespace Ultrasonic.DownloadManager
 
         #region Public Dependency Properties
 
-        public static readonly DependencyProperty ViewItemsSourceProperty = DependencyProperty.Register("ViewItemsSource", typeof(ObservableCollection<MyComboViewModel>), typeof(MainWindow));
-        public static readonly DependencyProperty ViewItemsSourceInformationProperty = DependencyProperty.Register("ViewItemsSourceInformation", typeof(ObservableCollection<MyComboViewModel>), typeof(MainWindow));
+        public static readonly DependencyProperty ViewItemsSourceProperty = DependencyProperty.Register("ViewItemsSource", typeof(ObservableCollection<MyComboViewModel>), typeof(DownloadManagerView));
+        public static readonly DependencyProperty ViewItemsSourceInformationProperty = DependencyProperty.Register("ViewItemsSourceInformation", typeof(ObservableCollection<MyComboViewModel>), typeof(DownloadManagerView));
 
         #endregion
 
@@ -87,7 +87,7 @@ namespace Ultrasonic.DownloadManager
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class.
         /// </summary>
-        public MainWindow()
+        public DownloadManagerView()
         {
 
             LogHelper.logger.Info("In MainWindow constructor.");
