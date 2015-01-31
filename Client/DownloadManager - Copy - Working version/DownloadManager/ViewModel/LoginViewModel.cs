@@ -11,6 +11,7 @@ using Microsoft.Practices.Prism.Commands;
 using ReactiveUI;
 using Ultrasonic.DownloadManager.Model;
 using Ultrasonic.DownloadManager.Repository;
+using Ultrasonic.DownloadManager.View;
 
 namespace Ultrasonic.DownloadManager.ViewModel
 {
@@ -53,8 +54,10 @@ namespace Ultrasonic.DownloadManager.ViewModel
                 if (_serviceRepository.IsValidLogin(LoginUser.UserName, LoginUser.Password))
                 {
                     CheckUpdateAvailable();
-                    DownloadManagerView mainWindow = new DownloadManagerView() { LoggedInUser = LoginUser };
-                    mainWindow.Show();
+                    //DownloadManagerView mainWindow = new DownloadManagerView() { LoggedInUser = LoginUser };
+                    //mainWindow.Show();
+                    var containerView = new ContainerView();
+                    containerView.Show();
                     LoginView.Close();
                 }
                 else

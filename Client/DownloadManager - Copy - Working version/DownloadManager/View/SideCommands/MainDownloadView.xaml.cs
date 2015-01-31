@@ -14,22 +14,25 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 using System.Windows.Threading;
-using System.Xml;
 using System.Xml.Linq;
 using Ultrasonic.DownloadManager.DownloadManagerService;
 using Ultrasonic.DownloadManager.Model;
-using WatiN.Core.DialogHandlers;
-using WatiN.Core.Logging;
 
-
-namespace Ultrasonic.DownloadManager
+namespace Ultrasonic.DownloadManager.View
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainDownloadView.xaml
     /// </summary>
-    public partial class DownloadManagerView : Window
+    public partial class MainDownloadView : UserControl
     {
         #region Private Members
 
@@ -56,52 +59,38 @@ namespace Ultrasonic.DownloadManager
         }
 
         #endregion
+        //#region Public Dependency Properties
 
-        #region Public Dependency Properties
+        //public static readonly DependencyProperty ViewItemsSourceProperty = DependencyProperty.Register("ViewItemsSource", typeof(ObservableCollection<MyComboViewModel>), typeof(DownloadManagerView));
+        //public static readonly DependencyProperty ViewItemsSourceInformationProperty = DependencyProperty.Register("ViewItemsSourceInformation", typeof(ObservableCollection<MyComboViewModel>), typeof(DownloadManagerView));
 
-        public static readonly DependencyProperty ViewItemsSourceProperty = DependencyProperty.Register("ViewItemsSource", typeof(ObservableCollection<MyComboViewModel>), typeof(DownloadManagerView));
-        public static readonly DependencyProperty ViewItemsSourceInformationProperty = DependencyProperty.Register("ViewItemsSourceInformation", typeof(ObservableCollection<MyComboViewModel>), typeof(DownloadManagerView));
+        //#endregion
 
-        #endregion
+        //#region Public Properties
 
-        #region Public Properties
+        //public ObservableCollection<MyComboViewModel> ViewItemsSource
+        //{
+        //    get { return (ObservableCollection<MyComboViewModel>)GetValue(ViewItemsSourceProperty); }
+        //    set { SetValue(ViewItemsSourceProperty, value); }
+        //}
+        //public ObservableCollection<MyComboViewModel> ViewItemsSourceInformation
+        //{
+        //    get { return (ObservableCollection<MyComboViewModel>)GetValue(ViewItemsSourceInformationProperty); }
+        //    set { SetValue(ViewItemsSourceInformationProperty, value); }
+        //}
 
-        public ObservableCollection<MyComboViewModel> ViewItemsSource
+        //#endregion
+        public MainDownloadView()
         {
-            get { return (ObservableCollection<MyComboViewModel>)GetValue(ViewItemsSourceProperty); }
-            set { SetValue(ViewItemsSourceProperty, value); }
-        }
-        public ObservableCollection<MyComboViewModel> ViewItemsSourceInformation
-        {
-            get { return (ObservableCollection<MyComboViewModel>)GetValue(ViewItemsSourceInformationProperty); }
-            set { SetValue(ViewItemsSourceInformationProperty, value); }
-        }
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MainWindow"/> class.
-        /// </summary>
-        public DownloadManagerView()
-        {
-
             LogHelper.logger.Info("In MainWindow constructor.");
             viewModel = new MainWindowViewModel();
             this.DataContext = viewModel;
             InitializeComponent();
 
             txtVersionInfo.Text = Assembly.GetEntryAssembly().GetName().Version.ToString();
-            //Fill Categories combo box
-            ViewItemsSource = new ObservableCollection<MyComboViewModel>(ComboViewShowcaseHelper.GetSource(0));
-
-            //Fill Information combo box
-            ViewItemsSourceInformation = new ObservableCollection<MyComboViewModel>(ComboViewShowcaseHelper.GetSource(1));
+            
             LogHelper.logger.Info("MainWindow object constructed.");
         }
-
-        #endregion
 
         #region Event Handlers
 
@@ -197,11 +186,11 @@ namespace Ultrasonic.DownloadManager
                     LogHelper.logger.Info(string.Format("Adding file part {0} to download async in queue.", filePartName));
 
                     Application.Current.Dispatcher.Invoke(() => viewModel.FileDownloads.Add(new FTPFile() { FileName = filePartName }));
-                    
+
                     // Start downloading file part Async
                     DownloadFTPFileAsync(finalDownloadUrl, fileName, filePartName, actualFileName);
                     numberOfRunningThreads++;
-                    
+
                     while (numberOfRunningThreads >= maxAllowedRunningThreads)
                     {
                         ; // Spin CPU until its downloading
@@ -243,6 +232,7 @@ namespace Ultrasonic.DownloadManager
                     else if (args.Error != null)
                     {
                         MessageBox.Show("Error while downloading file. " + args.Error.Message);
+                        LogHelper.logger.Error(args.Error);
                         return;
                     }
                     else
@@ -258,7 +248,7 @@ namespace Ultrasonic.DownloadManager
                                 _fileDownloadStatuses.Remove(currentFile);
 
                                 var currentFileProgressBar =
-                                    viewModel.FileDownloads.FirstOrDefault(x => x.FileName == filePartName && x.IsCompleted==false);
+                                    viewModel.FileDownloads.FirstOrDefault(x => x.FileName == filePartName && x.IsCompleted == false);
                                 if (currentFileProgressBar != null)
                                 {
                                     currentFileProgressBar.IsCompleted = true;
@@ -355,7 +345,6 @@ namespace Ultrasonic.DownloadManager
         }
 
         #endregion
-
         #region Private Methods
 
         /// <summary>
@@ -681,31 +670,5 @@ namespace Ultrasonic.DownloadManager
             }
         }
         #endregion
-
-    }
-
-    /// <summary>
-    /// CookieAwareWebClient
-    /// </summary>
-    public class CookieAwareWebClient : WebClient
-    {
-        private CookieContainer cookie = new CookieContainer();
-
-        /// <summary>
-        /// Returns a <see cref="T:System.Net.WebRequest"/> object for the specified resource.
-        /// </summary>
-        /// <param name="address">A <see cref="T:System.Uri"/> that identifies the resource to request.</param>
-        /// <returns>
-        /// A new <see cref="T:System.Net.WebRequest"/> object for the specified resource.
-        /// </returns>
-        protected override WebRequest GetWebRequest(Uri address)
-        {
-            WebRequest request = base.GetWebRequest(address);
-            if (request is HttpWebRequest)
-            {
-                (request as HttpWebRequest).CookieContainer = cookie;
-            }
-            return request;
-        }
     }
 }
