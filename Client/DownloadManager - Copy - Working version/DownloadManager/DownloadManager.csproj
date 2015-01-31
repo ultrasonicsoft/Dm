@@ -139,8 +139,8 @@
     <Compile Include="View\SideCommands\HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\SideCommands\MainDownloadView.xaml.cs">
-      <DependentUpon>MainDownloadView.xaml</DependentUpon>
+    <Compile Include="View\SideCommands\DownloadView.xaml.cs">
+      <DependentUpon>DownloadView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\NewUser.xaml.cs">
       <DependentUpon>NewUser.xaml</DependentUpon>
@@ -196,7 +196,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\SideCommands\MainDownloadView.xaml">
+    <Page Include="View\SideCommands\DownloadView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

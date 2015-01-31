@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Ultrasonic.DownloadManager.View.MainDownloadView"
+﻿<UserControl x:Class="Ultrasonic.DownloadManager.View.DownloadView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,7 +7,7 @@
              xmlns:downloadManager="clr-namespace:Ultrasonic.DownloadManager"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance downloadManager:MainWindowViewModel}"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="500">
     <UserControl.Resources>
         <HierarchicalDataTemplate x:Key="TreeViewSampleTemplate"  ItemsSource="{Binding Path=Children}">
             <TextBlock Text="{Binding Name}" />
@@ -15,26 +15,25 @@
     </UserControl.Resources>
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100"/>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="100"/>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="75"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
             <RowDefinition Height="300"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Label Content="Categories" 
-               HorizontalAlignment="Right" 
-               VerticalAlignment="Center"
-               Grid.Column="0"
-               Grid.Row="0"/>
-        <ZukerWpf:ComboView x:Name="cbCategories"
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Categories" 
+                   HorizontalAlignment="Right" 
+                   VerticalAlignment="Center"
+                   Grid.Column="0"/>
+            <ZukerWpf:ComboView x:Name="cbCategories"
                             ItemsSource="{Binding ViewItemsSource}"
                             SelectionMode="Normal"
                             SelectionHeader=""
@@ -42,58 +41,60 @@
                             DropDownClosed="cbCategories_DropDownClosed"
                             ItemTemplate="{StaticResource TreeViewSampleTemplate}"
                             CloseDropDownUponSelection="True"
-                            Width="200" Height="23"
+                            Width="200" 
+                            Height="23"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
-                            Grid.Column="1"
-                            Grid.Row="0">
-            <ZukerWpf:ComboView.ItemsViewTemplate>
-                <DataTemplate>
-                    <ZukerWpf:ExtendedTreeView BorderThickness="0"
+                            Grid.Column="1">
+                <ZukerWpf:ComboView.ItemsViewTemplate>
+                    <DataTemplate>
+                        <ZukerWpf:ExtendedTreeView BorderThickness="0"
                                                EnableCheckBoxView="True" />
-                </DataTemplate>
-            </ZukerWpf:ComboView.ItemsViewTemplate>
-        </ZukerWpf:ComboView>
-        <Label Content="Search"
-               HorizontalAlignment="Right"
-               VerticalAlignment="Center"
-               Grid.Column="4"
-               Grid.Row="0"/>
-        <TextBox x:Name="_searchText"
-                 HorizontalAlignment="Left" 
-                 VerticalAlignment="Center"
-                 Width="150"
-                 Grid.Column="5"
-                 Grid.Row="0"/>
-        <Label Content="Information"
-               HorizontalAlignment="Right"
-               VerticalAlignment="Center"
-               Grid.Column="2"
-               Grid.Row="0"/>
-        <ZukerWpf:ComboView x:Name="cbInformation"
-                            CloseDropDownUponSelection="True"
-                            Height="23" 
-                            ItemTemplate="{StaticResource TreeViewSampleTemplate}"
-                            ItemsSource="{Binding ViewItemsSourceInformation}" 
-                            SelectionDisplayMemberPath="Name"
-                            DropDownClosed ="cbInformation_DropDownClosed"
-                            SelectionHeader=""
-                            SelectionMode="Normal"
-                            Grid.Column="3"
-                            Grid.Row="0">
-            <ZukerWpf:ComboView.ItemsViewTemplate>
-                <DataTemplate>
-                    <ZukerWpf:ExtendedTreeView BorderThickness="0" EnableCheckBoxView="True" />
-                </DataTemplate>
-            </ZukerWpf:ComboView.ItemsViewTemplate>
-        </ZukerWpf:ComboView>
+                    </DataTemplate>
+                </ZukerWpf:ComboView.ItemsViewTemplate>
+            </ZukerWpf:ComboView>
+            <Label Content="Information"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   Grid.Column="2"
+                   Margin="30,0,0,0"/>
+            <ZukerWpf:ComboView x:Name="cbInformation"
+                                CloseDropDownUponSelection="True"
+                                Height="23" 
+                                ItemTemplate="{StaticResource TreeViewSampleTemplate}"
+                                ItemsSource="{Binding ViewItemsSourceInformation}" 
+                                SelectionDisplayMemberPath="Name"
+                                DropDownClosed ="cbInformation_DropDownClosed"
+                                SelectionHeader=""
+                                SelectionMode="Normal"
+                                Grid.Column="3">
+                <ZukerWpf:ComboView.ItemsViewTemplate>
+                    <DataTemplate>
+                        <ZukerWpf:ExtendedTreeView BorderThickness="0" EnableCheckBoxView="True" />
+                    </DataTemplate>
+                </ZukerWpf:ComboView.ItemsViewTemplate>
+            </ZukerWpf:ComboView>
+            <Label Content="Search"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   Grid.Column="4"
+                   Margin="50,0,0,0"/>
+            <TextBox x:Name="_searchText"
+                     HorizontalAlignment="Left" 
+                     VerticalAlignment="Center"
+                     Width="200"
+                     Height="25"
+                     Grid.Column="5"/>
+        </Grid>
+        <!--Download file list data grid -->
 
         <DataGrid x:Name="dgFileList"
                   AutoGenerateColumns="False"
                   AlternationCount="2"
                   Grid.Column="0"
-                  Grid.ColumnSpan="5"
                   Margin="5,0,0,0"
+                  RowHeight="20"
+                  FontSize="13"
                   Grid.Row="1">
             <DataGrid.RowStyle>
                 <Style TargetType="{x:Type DataGridRow}">
@@ -113,9 +114,15 @@
                 </Style>
             </DataGrid.RowStyle>
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn Header="Select" Binding="{Binding IsSelected}" />
-                <DataGridTextColumn Header="File Name" Binding="{Binding FileName}" Width="550"/>
-                <DataGridHyperlinkColumn Header="Download" Binding="{Binding Path=DownloadUri}" ContentBinding="{Binding Path=DownloadText}" Width="100">
+                <DataGridCheckBoxColumn Header="Select" 
+                                        Binding="{Binding IsSelected}" />
+                <DataGridTextColumn Header="File Name" 
+                                    Binding="{Binding FileName}"
+                                    Width="*"/>
+                <DataGridHyperlinkColumn Header="Download" 
+                                         Binding="{Binding Path=DownloadUri}" 
+                                         ContentBinding="{Binding Path=DownloadText}" 
+                                         Width="100">
                     <DataGridHyperlinkColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <EventSetter Event="Hyperlink.Click" Handler="OnHyperLinkClick" />
@@ -124,6 +131,8 @@
                 </DataGridHyperlinkColumn>
             </DataGrid.Columns>
         </DataGrid>
+
+        <!--Progress bars -->
 
         <StackPanel Grid.Column="0"
                     Grid.Row="2"
@@ -137,7 +146,8 @@
                     Click="btnDownloadAll_Click"
                     Background="Lavender"
                     Margin="10,0,0,0"/>
-            <TextBlock x:Name="txtVersionInfo"/>
+            <TextBlock x:Name="txtVersionInfo"
+                       Visibility="Collapsed"/>
             <ProgressBar Height="25"
                          HorizontalAlignment="Left"
                          Name="progressBar1"
@@ -145,36 +155,34 @@
                          Margin="20,0,0,0"
                          Width="512"
                          Visibility="Collapsed"/>
-            <ScrollViewer>
-                <ItemsControl ItemsSource="{Binding FileDownloads}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
+            <ItemsControl ItemsSource="{Binding FileDownloads}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
 
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="100" />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Row="0"
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0"
                                            Grid.Column="0"
                                            Text="{Binding FileName}" />
-                                <ProgressBar Grid.Row="0"
+                            <ProgressBar Grid.Row="0"
                                              Grid.Column="1"
                                              Minimum="0"
                                              Maximum="100"
                                              Value="{Binding Progress}" />
-                                <TextBlock Grid.Row="1"
+                            <TextBlock Grid.Row="1"
                                            Grid.Column="1"
                                            Text="{Binding StatusText}"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </StackPanel>
     </Grid>
 </UserControl>

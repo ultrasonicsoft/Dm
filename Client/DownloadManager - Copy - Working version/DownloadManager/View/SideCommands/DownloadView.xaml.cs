@@ -10,6 +10,7 @@ using System.IO.Packaging;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -32,7 +33,7 @@ namespace Ultrasonic.DownloadManager.View
     /// <summary>
     /// Interaction logic for MainDownloadView.xaml
     /// </summary>
-    public partial class MainDownloadView : UserControl
+    public partial class DownloadView : UserControl
     {
         #region Private Members
 
@@ -80,7 +81,7 @@ namespace Ultrasonic.DownloadManager.View
         //}
 
         //#endregion
-        public MainDownloadView()
+        public DownloadView()
         {
             LogHelper.logger.Info("In MainWindow constructor.");
             viewModel = new MainWindowViewModel();
@@ -187,6 +188,7 @@ namespace Ultrasonic.DownloadManager.View
 
                     Application.Current.Dispatcher.Invoke(() => viewModel.FileDownloads.Add(new FTPFile() { FileName = filePartName }));
 
+                    Terminate7ZipProcess();
                     // Start downloading file part Async
                     DownloadFTPFileAsync(finalDownloadUrl, fileName, filePartName, actualFileName);
                     numberOfRunningThreads++;
@@ -243,8 +245,12 @@ namespace Ultrasonic.DownloadManager.View
                             currentFile.DownloadedParts++;
                             if (currentFile.IsCompleted)
                             {
-                                MessageBox.Show("completed");
+                                MessageBox.Show("Download completed.");
+
+                                Application.Current.Dispatcher.Invoke(() => viewModel.FileDownloads.Clear());
+
                                 UnZipFileUsing7Zip(currentFile.FirstFilePart, downloadFolderPath, "balram");
+
                                 _fileDownloadStatuses.Remove(currentFile);
 
                                 var currentFileProgressBar =
@@ -254,6 +260,7 @@ namespace Ultrasonic.DownloadManager.View
                                     currentFileProgressBar.IsCompleted = true;
                                     //viewModel.FileDownloads.Remove(currentFileProgressBar);
                                 }
+                                
                             }
                             numberOfRunningThreads--;
                         }
@@ -270,7 +277,7 @@ namespace Ultrasonic.DownloadManager.View
                         currentProgressBar.StatusText = string.Format("{0} % complete", args.ProgressPercentage);
                     }
                     //Console.WriteLine("{0} - {1} % complete", ProgressChanged(args.BytesReceived), args.ProgressPercentage);
-                    Console.WriteLine("{0} % complete", args.ProgressPercentage);
+                    Console.WriteLine("{0} % completed", args.ProgressPercentage);
                     //var progressDispatcher = progressBar1.Dispatcher;
                     //Action action = () =>
                     //{
@@ -354,6 +361,7 @@ namespace Ultrasonic.DownloadManager.View
         {
             try
             {
+                Mouse.OverrideCursor = Cursors.Wait;
                 DownloadDataProviderServiceClient client = new DownloadDataProviderServiceClient();
                 var categoryData = client.GetFileList();
                 XDocument doc = XDocument.Parse(categoryData);
@@ -450,6 +458,10 @@ namespace Ultrasonic.DownloadManager.View
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                Mouse.OverrideCursor = null;
             }
         }
 
@@ -618,11 +630,22 @@ namespace Ultrasonic.DownloadManager.View
                 Process p = Process.Start(process);
                 p.WaitForExit();
                 //while (!p.HasExited) ;
-                MessageBox.Show("File unzipped.");
+                MessageBox.Show("Download completed.");
+                Terminate7ZipProcess();
+                Process.Start(outputDir);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void Terminate7ZipProcess()
+        {
+            var runningProcess = Process.GetProcessesByName("7z");
+            foreach (var _7zipProcess in runningProcess)
+            {
+                _7zipProcess.Kill();
             }
         }
 

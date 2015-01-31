@@ -35,7 +35,7 @@ namespace Ultrasonic.DownloadManager.ViewModel
 
         private SelectedCommand currentlySelectedCommand;
 
-        private MainDownloadView mainDownloadView;
+        private DownloadView mainDownloadView;
         private DownloadHistoryView downloadHistoryView;
         private SettingView settingView;
         private MyAccountView myAccountView;
@@ -99,7 +99,7 @@ namespace Ultrasonic.DownloadManager.ViewModel
 
         public ContainerViewModel()
         {
-            mainDownloadView = new MainDownloadView();
+            mainDownloadView = new DownloadView();
             downloadHistoryView= new DownloadHistoryView();
             settingView = new SettingView();
 
