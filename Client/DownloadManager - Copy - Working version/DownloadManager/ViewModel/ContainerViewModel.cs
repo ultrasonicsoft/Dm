@@ -40,7 +40,7 @@ namespace Ultrasonic.DownloadManager.ViewModel
         private SettingView settingView;
         private MyAccountView myAccountView;
         private HelpView helpView;
-        private AboutView aboutView ;
+        private AboutView aboutView;
 
         public DelegateCommand ShowMainViewCommand { get; set; }
         public DelegateCommand ShowDownloadHistoryCommand { get; set; }
@@ -96,15 +96,18 @@ namespace Ultrasonic.DownloadManager.ViewModel
             get { return currentViewName; }
             set { this.RaiseAndSetIfChanged(v => v.CurrentViewName, ref currentViewName, value); }
         }
-
+      
         public ContainerViewModel()
         {
             mainDownloadView = new DownloadView();
-            downloadHistoryView= new DownloadHistoryView();
+            downloadHistoryView = new DownloadHistoryView();
             settingView = new SettingView();
-
-            ShowMainViewCommand = new DelegateCommand(ExecuteShowMainViewCommand, ()=> true);
-            ShowDownloadHistoryCommand = new DelegateCommand(ExecuteShowDownloadHistoryCommand, ()=> true);
+            myAccountView = new MyAccountView() { };
+            helpView = new HelpView();
+            aboutView = new AboutView();
+            
+            ShowMainViewCommand = new DelegateCommand(ExecuteShowMainViewCommand, () => true);
+            ShowDownloadHistoryCommand = new DelegateCommand(ExecuteShowDownloadHistoryCommand, () => true);
             ShowSettingsCommand = new DelegateCommand(ExecuteShowSettingsCommand, () => true);
             ShowMyAccountCommand = new DelegateCommand(ExecuteShowMyAccountCommand, () => true);
             ShowHelpCommand = new DelegateCommand(ExecuteShowHelpCommand, () => true);
@@ -158,49 +161,49 @@ namespace Ultrasonic.DownloadManager.ViewModel
                     IsMainViewSelected = true;
                     IsDownloadHistorySelected = false;
                     IsSettingsSelected = false;
-                    IsMyAccountSelected= false;
+                    IsMyAccountSelected = false;
                     IsHelpSelected = false;
-                    IsAboutSelected= false;
+                    IsAboutSelected = false;
                     break;
                 case SelectedCommand.DownloadHistory:
                     IsMainViewSelected = false;
                     IsDownloadHistorySelected = true;
                     IsSettingsSelected = false;
-                    IsMyAccountSelected= false;
+                    IsMyAccountSelected = false;
                     IsHelpSelected = false;
-                    IsAboutSelected= false;
+                    IsAboutSelected = false;
                     break;
                 case SelectedCommand.Settings:
                     IsMainViewSelected = false;
                     IsDownloadHistorySelected = false;
                     IsSettingsSelected = true;
-                    IsMyAccountSelected= false;
+                    IsMyAccountSelected = false;
                     IsHelpSelected = false;
-                    IsAboutSelected= false;
+                    IsAboutSelected = false;
                     break;
                 case SelectedCommand.MyAccount:
                     IsMainViewSelected = false;
                     IsDownloadHistorySelected = false;
                     IsSettingsSelected = false;
-                    IsMyAccountSelected= true;
+                    IsMyAccountSelected = true;
                     IsHelpSelected = false;
-                    IsAboutSelected= false;
+                    IsAboutSelected = false;
                     break;
                 case SelectedCommand.Help:
                     IsMainViewSelected = false;
                     IsDownloadHistorySelected = false;
                     IsSettingsSelected = false;
-                    IsMyAccountSelected= false;
+                    IsMyAccountSelected = false;
                     IsHelpSelected = true;
-                    IsAboutSelected= false;
+                    IsAboutSelected = false;
                     break;
                 case SelectedCommand.About:
                     IsMainViewSelected = false;
                     IsDownloadHistorySelected = false;
                     IsSettingsSelected = false;
-                    IsMyAccountSelected= false;
+                    IsMyAccountSelected = false;
                     IsHelpSelected = false;
-                    IsAboutSelected= true;
+                    IsAboutSelected = true;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException("selectedCommand");

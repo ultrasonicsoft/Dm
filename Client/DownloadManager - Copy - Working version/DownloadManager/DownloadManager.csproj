@@ -121,6 +121,9 @@
     </Compile>
     <Compile Include="ViewModel\ContainerViewModel.cs" />
     <Compile Include="ViewModel\NewUserViewModel.cs" />
+    <Compile Include="ViewModel\SideCommandsViewModels\AboutViewModel.cs" />
+    <Compile Include="ViewModel\SideCommandsViewModels\MyAccountViewModel.cs" />
+    <Compile Include="ViewModel\SideCommandsViewModels\SettingsViewModel.cs" />
     <Compile Include="View\SideCommands\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
@@ -239,6 +242,7 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

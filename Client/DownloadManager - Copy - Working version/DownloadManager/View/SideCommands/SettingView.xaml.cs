@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Ultrasonic.DownloadManager.ViewModel.SideCommandsViewModels;
 
 namespace Ultrasonic.DownloadManager.View
 {
@@ -22,6 +23,7 @@ namespace Ultrasonic.DownloadManager.View
     {
         public SettingView()
         {
+            this.DataContext = new SettingsViewModel();
             InitializeComponent();
         }
     }

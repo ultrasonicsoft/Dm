@@ -56,6 +56,8 @@ namespace Ultrasonic.DownloadManager.ViewModel
                     CheckUpdateAvailable();
                     //DownloadManagerView mainWindow = new DownloadManagerView() { LoggedInUser = LoginUser };
                     //mainWindow.Show();
+                    Properties.Settings.Default.LoggedInUser = LoginUser.UserName;
+                    Properties.Settings.Default.Save();
                     var containerView = new ContainerView();
                     containerView.Show();
                     LoginView.Close();

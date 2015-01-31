@@ -8,5 +8,14 @@
     <Setting Name="Password" Type="System.String" Scope="User">
       <Value Profile="(Default)">default</Value>
     </Setting>
+    <Setting Name="NumberOfThreads" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="DefaultDownloadPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="LoggedInUser" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

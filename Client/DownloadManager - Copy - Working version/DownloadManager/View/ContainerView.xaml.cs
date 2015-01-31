@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,8 +19,9 @@ namespace Ultrasonic.DownloadManager.View
     /// <summary>
     /// Interaction logic for MainContainerView.xaml
     /// </summary>
-    public partial class ContainerView : Window
+    public partial class ContainerView : Window 
     {
+
         public ContainerView()
         {
             this.DataContext = new ContainerViewModel();

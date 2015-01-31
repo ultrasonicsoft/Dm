@@ -48,7 +48,6 @@ namespace Ultrasonic.DownloadManager.View
         static string serverUri = "ftp://balram@95.89.83.26:64888/ftp/Movies/TestMovie/balram.JPG";
         static long lastBytes = 0;
         private List<FileDownloadStatus> _fileDownloadStatuses = new List<FileDownloadStatus>();
-        string downloadFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\Downloaded\\";
         private string ftpUserName = "balram";
         private string ftpUserPassword = "balram";
         private int numberOfRunningThreads;
@@ -88,7 +87,6 @@ namespace Ultrasonic.DownloadManager.View
             this.DataContext = viewModel;
             InitializeComponent();
 
-            txtVersionInfo.Text = Assembly.GetEntryAssembly().GetName().Version.ToString();
             
             LogHelper.logger.Info("MainWindow object constructed.");
         }
@@ -146,7 +144,7 @@ namespace Ultrasonic.DownloadManager.View
                 {
                     TotalParts = downloadUriParts.Count,
                     FileName = actualFileName,
-                    FirstFilePart = string.Concat(downloadFolderPath, "\\", actualFileName, ".7z.001")
+                    FirstFilePart = string.Concat(Properties.Settings.Default.DefaultDownloadPath, "\\", actualFileName, ".7z.001")
                 });
 
                 LogHelper.logger.Info("Added File to be downloaded in FileDownload queue.");
@@ -163,15 +161,15 @@ namespace Ultrasonic.DownloadManager.View
                     //fileName = tempPath + "\\" + downloadUri.Split('/')[downloadUri.Split('/').Length - 1];
                     if (downloadUriParts.Count < 10)
                     {
-                        fileName = downloadFolderPath + "\\" + actualFileName + ".7z.00" + counter.ToString();
+                        fileName = Properties.Settings.Default.DefaultDownloadPath + "\\" + actualFileName + ".7z.00" + counter.ToString();
                     }
                     else if (downloadUriParts.Count >= 10 && downloadUriParts.Count < 100)
                     {
-                        fileName = downloadFolderPath + "\\" + actualFileName + ".7z.0" + counter.ToString();
+                        fileName = Properties.Settings.Default.DefaultDownloadPath  + "\\" + actualFileName + ".7z.0" + counter.ToString();
                     }
                     else if (downloadUriParts.Count >= 100 && downloadUriParts.Count < 1000)
                     {
-                        fileName = downloadFolderPath + "\\" + actualFileName + ".7z." + counter.ToString();
+                        fileName = Properties.Settings.Default.DefaultDownloadPath + "\\" + actualFileName + ".7z." + counter.ToString();
                     }
                     if (counter == 1)
                         ;
@@ -193,7 +191,7 @@ namespace Ultrasonic.DownloadManager.View
                     DownloadFTPFileAsync(finalDownloadUrl, fileName, filePartName, actualFileName);
                     numberOfRunningThreads++;
 
-                    while (numberOfRunningThreads >= maxAllowedRunningThreads)
+                    while (numberOfRunningThreads >= Properties.Settings.Default.NumberOfThreads)
                     {
                         ; // Spin CPU until its downloading
                     }
@@ -249,7 +247,7 @@ namespace Ultrasonic.DownloadManager.View
 
                                 Application.Current.Dispatcher.Invoke(() => viewModel.FileDownloads.Clear());
 
-                                UnZipFileUsing7Zip(currentFile.FirstFilePart, downloadFolderPath, "balram");
+                                UnZipFileUsing7Zip(currentFile.FirstFilePart, Properties.Settings.Default.DefaultDownloadPath, "balram");
 
                                 _fileDownloadStatuses.Remove(currentFile);
 
@@ -623,14 +621,17 @@ namespace Ultrasonic.DownloadManager.View
         {
             try
             {
-                ProcessStartInfo process = new ProcessStartInfo();
-                process.FileName = ConfigurationManager.AppSettings["7Zip"]; ;
-                process.Arguments = string.Format(" x  {0} -p{1} -o{2}", fileName, password, outputDir);
-                process.WindowStyle = ProcessWindowStyle.Hidden;
-                Process p = Process.Start(process);
-                p.WaitForExit();
+                ProcessStartInfo process = new ProcessStartInfo
+                {
+                    FileName = ConfigurationManager.AppSettings["7Zip"],
+                    Arguments = string.Format(" x  {0} -p{1} -o{2}", fileName, password, outputDir),
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+                var p = Process.Start(process);
+                if (p != null) 
+                    p.WaitForExit();
                 //while (!p.HasExited) ;
-                MessageBox.Show("Download completed.");
+                MessageBox.Show("Downloaded file unzipped.");
                 Terminate7ZipProcess();
                 Process.Start(outputDir);
             }

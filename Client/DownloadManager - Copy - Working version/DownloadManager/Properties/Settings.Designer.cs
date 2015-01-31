@@ -46,5 +46,41 @@ namespace Ultrasonic.DownloadManager.Properties {
                 this["Password"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int NumberOfThreads {
+            get {
+                return ((int)(this["NumberOfThreads"]));
+            }
+            set {
+                this["NumberOfThreads"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DefaultDownloadPath {
+            get {
+                return ((string)(this["DefaultDownloadPath"]));
+            }
+            set {
+                this["DefaultDownloadPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LoggedInUser {
+            get {
+                return ((string)(this["LoggedInUser"]));
+            }
+            set {
+                this["LoggedInUser"] = value;
+            }
+        }
     }
 }
